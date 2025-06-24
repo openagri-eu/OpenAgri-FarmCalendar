@@ -42,12 +42,8 @@ jobs:
         with:
           context: .
           push: true
-<<<<<<< Updated upstream
-          tags: ghcr.io/${{ github.repository }}:latest
-=======
           tags: |
             ghcr.io/${{ env.REPO_LOWER }}:${{ github.ref_name }}
             ${{ github.ref_name == 'main' && format('ghcr.io/{0}:latest', env.REPO_LOWER) || '' }}
->>>>>>> Stashed changes
           cache-from: type=gha
           cache-to: type=gha,mode=max
