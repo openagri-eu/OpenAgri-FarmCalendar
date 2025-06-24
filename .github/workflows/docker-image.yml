@@ -3,6 +3,15 @@ name: Docker Image CI
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to run the workflow on'
+        required: false
+  release:
+    types:
+      - created
+
 
 jobs:
   build-and-push:
@@ -37,6 +46,8 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ env.REPO_LOWER }}:latest
+          tags: |
+            ghcr.io/${{ env.REPO_LOWER }}:${{ github.ref_name }}
+            ${{ github.ref_name == 'main' && format('ghcr.io/{0}:latest', env.REPO_LOWER) || '' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
