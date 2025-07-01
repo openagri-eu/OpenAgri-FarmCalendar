@@ -55,10 +55,10 @@ class AlertViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Alert to be viewed or edited.
     """
-    queryset = Alert.objects.all().order_by('-name')
+    queryset = Alert.objects.all().order_by('-start_datetime')
     serializer_class = AlertSerializer
     permission_classes = [permissions.IsAuthenticated]
-    filterset_fields = ['name', 'activity_type']
+    filterset_fields = ['title', 'activity_type', 'severity']
 
 
 class FertilizationOperationViewSet(viewsets.ModelViewSet):

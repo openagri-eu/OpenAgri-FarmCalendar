@@ -16,6 +16,7 @@ from farm_management.models import (
 from farm_activities.models import (
     FarmCalendarActivityType,
     FarmCalendarActivity,
+    Alert,
     FertilizationOperation,
     IrrigationOperation,
     CropProtectionOperation,Observation,
@@ -294,7 +295,7 @@ class AlertSerializer(FarmCalendarActivitySerializer):
     )
 
     class Meta:
-        model = Observation
+        model = Alert
         fields = [
             'id',
             'activityType',
