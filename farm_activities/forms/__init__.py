@@ -28,7 +28,7 @@ def get_generic_farm_calendar_activity_form(activity_type):
         if is_observation:
             ActivityModelForm = ObservationForm
         elif is_alert:
-            ActivityModelForm = ObservationForm
+            ActivityModelForm = AlertForm
         else:
             ActivityModelForm = FarmCalendarActivityForm
 

@@ -1,9 +1,10 @@
 from django import forms
 from django.forms import modelform_factory
+from django.utils.translation import gettext_lazy as _
 
 from dal import autocomplete
 
-from ..models import FarmCalendarActivityType, FarmCalendarActivity, Observation
+from ..models import FarmCalendarActivityType, FarmCalendarActivity, Observation, Alert
 from .widgets import ReadOnlyNestedActivitiesWidget
 
 
@@ -81,3 +82,16 @@ class ObservationForm(NestedActivityForm):
         if 'parent_activity' in _parent_exc:
             _parent_exc.remove('parent_activity')
         exclude = _parent_exc
+
+
+class AlertForm(NestedActivityForm):
+    class Meta(NestedActivityForm.Meta):
+        model = Alert
+        _parent_exc = NestedActivityForm.Meta.exclude.copy()
+        _parent_exc.append('responsible_agent')
+        _parent_exc.append('agricultural_machinery')
+        exclude = _parent_exc
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['parent_activity'].label = _("Related Observation")
