@@ -1,3 +1,4 @@
+{% load oa_fc_tags %}
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
@@ -20,30 +21,30 @@
             <span>Calendar</span>
         </a>
     </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-    <!-- Heading -->
-    <div class="sidebar-heading">
-        Overview
-    </div>
-
-
-    <li class="nav-item{% if active_page == 'report' %} active{% endif %}">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports"
-            aria-expanded="true" aria-controls="collapseReports">
-            <i class="fas fa-fw fa-file"></i>
-            <span>Prepare Report</span>
-        </a>
-        <div id="collapseReports" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{% url 'prepare_report' report_type='livestock' %}">Livestock</a>
-                <a class="collapse-item" href="{% url 'prepare_report' report_type='irrigation' %}">Irrigation</a>
-                <a class="collapse-item" href="{% url 'prepare_report' report_type='composting' %}">Composting</a>
-            </div>
+    {% get_setting "DISABLE_REPORTING" as disable_reporting %}
+    {% if not disable_reporting %}
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Overview
         </div>
-        </li>
 
+        <li class="nav-item{% if active_page == 'report' %} active{% endif %}">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReports"
+                aria-expanded="true" aria-controls="collapseReports">
+                <i class="fas fa-fw fa-file"></i>
+                <span>Prepare Report</span>
+            </a>
+            <div id="collapseReports" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="{% url 'prepare_report' report_type='livestock' %}">Livestock</a>
+                    <a class="collapse-item" href="{% url 'prepare_report' report_type='irrigation' %}">Irrigation</a>
+                    <a class="collapse-item" href="{% url 'prepare_report' report_type='composting' %}">Composting</a>
+                </div>
+            </div>
+            </li>
+    {% endif %}
     <!-- Divider -->
     <hr class="sidebar-divider">
     <!-- Heading -->
