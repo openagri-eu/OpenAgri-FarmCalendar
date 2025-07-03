@@ -56,6 +56,36 @@ def quantity_value_serializer_factory(unit_field, value_field):
     return GenericQuantityValueFieldSerializer
 
 
+def observation_ref_quantity_value_serializer_factory(unit_field, value_field):
+
+    class ObservationQuantityValueFieldSerializer(serializers.Serializer):
+        unit = serializers.CharField(allow_null=True, read_only=True)
+        hasValue = serializers.CharField(allow_null=True, read_only=True)
+
+
+        def to_representation(self, instance):
+            instanced_observation = None
+            try:
+                instanced_observation = instance.observation
+            except Observation.DoesNotExist:
+                return {}
+
+            value = getattr(instanced_observation, value_field)
+            unit = getattr(instanced_observation, unit_field)
+            uuid_orig_str = "".join([
+                str(getattr(instanced_observation, unit_field, '')),
+                str(getattr(instanced_observation, value_field, ''),)
+            ])
+            hash_uuid = str(uuid.uuid5(uuid.NAMESPACE_DNS, uuid_orig_str))
+            return {
+                '@id': generate_urn('QuantityValue',obj_id=hash_uuid),
+                '@type': 'QuantityValue',
+                'unit': unit,
+                'hasValue': value,
+            }
+    return ObservationQuantityValueFieldSerializer
+
+
 class FarmCalendarActivitySerializer(serializers.ModelSerializer):
     activityType = URNRelatedField(class_names=['FarmCalendarActivityType'], source='activity_type', queryset=FarmCalendarActivityType.objects.all())
     hasStartDatetime = serializers.DateTimeField(source='start_datetime')
@@ -293,6 +323,7 @@ class AlertSerializer(FarmCalendarActivitySerializer):
         source='parent_activity',
         allow_null=True
     )
+    quantityValue = observation_ref_quantity_value_serializer_factory('value_unit', 'value')(source='parent_activity')
 
     class Meta:
         model = Alert
@@ -303,7 +334,7 @@ class AlertSerializer(FarmCalendarActivitySerializer):
             'severity',
             'validFrom',
             'validTo',
-            # 'quantityValue',
+            'quantityValue',
             'relatedObservation',
         ]
 
