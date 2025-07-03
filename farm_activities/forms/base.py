@@ -85,6 +85,13 @@ class ObservationForm(NestedActivityForm):
 
 
 class AlertForm(NestedActivityForm):
+    value = forms.CharField(required=False,
+                widget=forms.TextInput(attrs={'disabled': 'disabled'}))
+    value_unit = forms.CharField(required=False,
+                widget=forms.TextInput(attrs={'disabled': 'disabled'}))
+    observed_property = forms.CharField(required=False,
+                widget=forms.TextInput(attrs={'disabled': 'disabled'}))
+
     class Meta(NestedActivityForm.Meta):
         model = Alert
         _parent_exc = NestedActivityForm.Meta.exclude.copy()
@@ -95,3 +102,12 @@ class AlertForm(NestedActivityForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['parent_activity'].label = _("Related Observation")
+        if self.instance and self.instance.pk and self.instance.parent_activity:
+            try:
+                parent_observation = self.instance.parent_activity.observation
+                if self.instance.parent_activity:
+                    self.fields['value'].initial = parent_observation.value
+                    self.fields['value_unit'].initial = parent_observation.value_unit
+                    self.fields['observed_property'].initial = parent_observation.observed_property
+            except Observation.DoesNotExist:
+                pass
