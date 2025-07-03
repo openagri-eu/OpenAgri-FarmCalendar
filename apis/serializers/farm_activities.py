@@ -59,8 +59,8 @@ def quantity_value_serializer_factory(unit_field, value_field):
 def observation_ref_quantity_value_serializer_factory(unit_field, value_field):
 
     class ObservationQuantityValueFieldSerializer(serializers.Serializer):
-        unit = serializers.CharField(allow_null=True, read_only=True)
-        hasValue = serializers.CharField(allow_null=True, read_only=True)
+        unit = serializers.CharField(allow_null=True, read_only=True, required=False)
+        hasValue = serializers.CharField(allow_null=True, read_only=True, required=False)
 
 
         def to_representation(self, instance):
@@ -323,7 +323,7 @@ class AlertSerializer(FarmCalendarActivitySerializer):
         source='parent_activity',
         allow_null=True
     )
-    quantityValue = observation_ref_quantity_value_serializer_factory('value_unit', 'value')(source='parent_activity')
+    quantityValue = observation_ref_quantity_value_serializer_factory('value_unit', 'value')(source='parent_activity', required=False)
 
     class Meta:
         model = Alert
