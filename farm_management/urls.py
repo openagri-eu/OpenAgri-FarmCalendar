@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 
 from django.urls import path
 from .views import (
@@ -73,5 +74,9 @@ urlpatterns = [
 
     path("pesticides/", PesticideListView.as_view(), name="pesticides"),
     path("pesticides/<uuid:pk>/", PesticideUpdateView.as_view(), name="pesticide_edit"),
-    path("reports/<str:report_type>/", PrepareReportView.as_view(), name="prepare_report"),
 ]
+
+if not settings.DISABLE_REPORTING:
+    urlpatterns += [
+        path("reports/<str:report_type>/", PrepareReportView.as_view(), name="prepare_report"),
+    ]
