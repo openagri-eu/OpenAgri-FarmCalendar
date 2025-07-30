@@ -20,6 +20,7 @@ from .views import (
     FertilizerViewSet,
     IrrigationOperationViewSet,
     CropProtectionOperationViewSet,
+    YieldPredictionObservationViewSet,
     PesticideViewSet,
     ObservationViewSet,
     CropStressIndicatorObservationViewSet,
@@ -44,6 +45,7 @@ router.register(r'FertilizationOperations', FertilizationOperationViewSet)
 router.register(r'Fertilizers', FertilizerViewSet)
 router.register(r'IrrigationOperations', IrrigationOperationViewSet)
 router.register(r'CropProtectionOperations', CropProtectionOperationViewSet)
+router.register(r'YieldPrediction', YieldPredictionObservationViewSet)
 router.register(r'Pesticides', PesticideViewSet)
 router.register(r'Observations', ObservationViewSet)
 router.register(r'CropStressIndicatorObservations', CropStressIndicatorObservationViewSet)

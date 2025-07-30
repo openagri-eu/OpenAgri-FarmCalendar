@@ -79,6 +79,17 @@ class CropStressIndicatorObservation(Observation):
     crop = models.ForeignKey('farm_management.FarmCrop', on_delete=models.CASCADE, blank=False, null=False)
 
 
+class YieldPredictionObservation(Observation):
+
+    ACTIVITY_NAME = settings.DEFAULT_CALENDAR_ACTIVITY_TYPES['yield_prediction']['name']
+
+    class Meta:
+        verbose_name = "Yield Prediction Observation"
+        verbose_name_plural = "Yield Prediction Observations"
+
+    crop = models.ForeignKey('farm_management.FarmCrop', on_delete=models.CASCADE, blank=False, null=False)
+
+
 class CropGrowthStageObservation(Observation):
     ACTIVITY_NAME = settings.DEFAULT_CALENDAR_ACTIVITY_TYPES['crop_growth_stage']['name']
 

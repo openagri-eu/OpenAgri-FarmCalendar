@@ -21,6 +21,7 @@ from farm_activities.models import (
     IrrigationOperation,
     CropProtectionOperation,Observation,
     CropStressIndicatorObservation,
+    YieldPredictionObservation,
     CropGrowthStageObservation,
     CompostOperation,
     AddRawMaterialOperation,
@@ -369,6 +370,34 @@ class CropStressIndicatorObservationSerializer(ObservationSerializer):
         json_ld_representation = representation
 
         return json_ld_representation
+
+
+class YieldPredictionObservationSerializer(ObservationSerializer):
+    hasAgriCrop = URNRelatedField(
+        class_names=['FarmCrop'],
+        queryset=FarmCrop.objects.all(),
+        source='crop'
+    )
+    class Meta:
+        model = YieldPredictionObservation
+        fields = [
+            'id',
+            'activityType', 'title', 'details',
+            'phenomenonTime',
+            'hasEndDatetime',
+            'madeBySensor',
+            'hasAgriCrop',
+            'hasResult',
+            'observedProperty',
+        ]
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation.update({'@type': 'YieldPrediction'})
+        json_ld_representation = representation
+
+        return json_ld_representation
+
 
 class CropGrowthStageObservationSerializer(ObservationSerializer):
     hasAgriCrop = URNRelatedField(

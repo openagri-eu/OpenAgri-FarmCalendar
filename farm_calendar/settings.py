@@ -409,5 +409,13 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'text_color': '#3C4F2E',
         'category': 'activity',
         'id': '00000000-0000-0000-0000-000000000008',
+    },
+    'yield_prediction': {
+        'name': 'Yield Prediction Observation',
+        'description': 'Yield Prediction',
+        'background_color': '#E6F3C3',
+        'border_color': '#5A7247',
+        'text_color': '#2A3B1E',
+        'id': '00000000-0000-0000-0000-000000000009',
     }
 }

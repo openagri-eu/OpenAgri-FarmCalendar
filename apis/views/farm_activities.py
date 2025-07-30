@@ -7,6 +7,7 @@ from farm_activities.models import (
     FertilizationOperation,
     IrrigationOperation,
     CropProtectionOperation,
+    YieldPredictionObservation,
     Observation,
     CropStressIndicatorObservation,
     CropGrowthStageObservation,
@@ -21,6 +22,7 @@ from ..serializers import (
     FertilizationOperationSerializer,
     IrrigationOperationSerializer,
     CropProtectionOperationSerializer,
+    YieldPredictionObservationSerializer,
     ObservationSerializer,
     CropStressIndicatorObservationSerializer,
     CropGrowthStageObservationSerializer,
@@ -128,6 +130,16 @@ class CropGrowthStageObservationViewSet(viewsets.ModelViewSet):
     """
     queryset = CropGrowthStageObservation.objects.all().order_by('-start_datetime')
     serializer_class = CropGrowthStageObservationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    filterset_fields = ['title','activity_type', 'responsible_agent']
+
+
+class YieldPredictionObservationViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows YieldPrediction to be viewed or edited.
+    """
+    queryset = YieldPredictionObservation.objects.all().order_by('-start_datetime')
+    serializer_class = YieldPredictionObservationSerializer
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['title','activity_type', 'responsible_agent']
 
