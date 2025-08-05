@@ -1,63 +1,54 @@
+from functools import lru_cache
+
+
 from django_filters import rest_framework as filters
-from django.contrib.gis.geos import Point, GEOSGeometry
-from django.db.models import F, Func, Value
-from django.db.models.functions import Cast
-from django.contrib.gis.db.models.fields import GeometryField
-from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
+
+from shapely.wkt import loads
+from shapely.geometry import Point
 
 from farm_management.models import FarmParcel
 
+
 class FarmParcelFilter(filters.FilterSet):
-    # Existing field filters will be automatically included
-    contains_point = filters.CharFilter(label=_("Contain's point"), method='filter_contains_point')
+    contains_point = filters.CharFilter(
+        label=_("Contains point (lat,lon)"),
+        method='filter_contains_point',
+        help_text=_("Filter parcels containing this point. Format (EPSG:4326): 'latitude,longitude'")
+    )
 
     class Meta:
         model = FarmParcel
         fields = ['identifier', 'farm', 'parcel_type', 'geo_id', 'status']
 
-    # This is the key - it ensures proper form rendering
-    # @property
-    # def qs(self):
-    #     queryset = super().qs
-    #     return queryset
-
+    @lru_cache(maxsize=10)
+    def is_point_in_geometry(self, geometry_wkt, point):
+        """Check if point is contained in geometry WKT"""
+        if not geometry_wkt:
+            return False
+        try:
+            return loads(geometry_wkt).contains(point)
+        except:
+            return False
 
     def filter_contains_point(self, queryset, name, value):
         """
-        Filter farm parcels that contain the given point in their polygon.
-        Expected input format: "latitude,longitude" or "latitude,longitude,tolerance"
+        Filter farm parcels that contain the given point.
+        Input format: "latitude,longitude" (WGS84 coordinates)
+        Both point and parcel geometries are in EPSG:4326.
         """
-        import ipdb; ipdb.set_trace()
         try:
-            parts = value.split(',')
-            if len(parts) == 2:
-                lat, lon = map(float, parts)
-                tolerance = 0.0
-            elif len(parts) == 3:
-                lat, lon, tolerance = map(float, parts)
-            else:
-                return queryset.none()
+            lat, lon  = map(float, value.split(','))
+            point = Point(lon, lat)
 
-            point = Point(lon, lat, srid=4326)
+            query_set_values = queryset.values_list('id', 'geometry')
 
-            # Convert WKT text field to geometry for comparison
-            queryset = queryset.annotate(
-                geom=Func(
-                    F('geometry'),
-                    function='ST_GeomFromText',
-                    output_field=GeometryField()
-                )
-            )
+            matching_ids = [
+                parcel_id for parcel_id, geometry in query_set_values
+                if self.is_point_in_geometry(geometry, point)
+            ]
 
-            if tolerance > 0:
-                # Create buffer and check intersection
-                return queryset.filter(
-                    geom__intersects=point.buffer(tolerance)
-                )
-            else:
-                # Exact containment check
-                return queryset.filter(geom__contains=point)
+            return queryset.filter(id__in=matching_ids)
 
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, AttributeError):
             return queryset.none()
