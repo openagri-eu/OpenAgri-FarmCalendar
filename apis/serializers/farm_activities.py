@@ -310,9 +310,6 @@ class ObservationSerializer(FarmCalendarActivitySerializer):
         return super().create(validated_data)
 
 
-
-
-
 class AlertSerializer(FarmCalendarActivitySerializer):
     validFrom = serializers.DateTimeField(source='start_datetime')
     validTo = serializers.DateTimeField(source='end_datetime')

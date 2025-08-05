@@ -464,6 +464,243 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/v1/Alerts/:
+    get:
+      operationId: api_v1_Alerts_list
+      description: API endpoint that allows Alert to be viewed or edited.
+      parameters:
+      - in: query
+        name: activity_type
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: query
+        name: severity
+        schema:
+          type: string
+          enum:
+          - critical
+          - major
+          - minor
+          - moderate
+          - severe
+        description: |-
+          * `minor` - Minor
+          * `moderate` - Moderate
+          * `severe` - Severe
+          * `major` - Major
+          * `critical` - Critical
+      - in: query
+        name: title
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Alert'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Alert'
+          description: ''
+    post:
+      operationId: api_v1_Alerts_create
+      description: API endpoint that allows Alert to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Alert'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Alert'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Alert'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+          description: ''
+  /api/v1/Alerts/{id}/:
+    get:
+      operationId: api_v1_Alerts_retrieve
+      description: API endpoint that allows Alert to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Alert.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+          description: ''
+    put:
+      operationId: api_v1_Alerts_update
+      description: API endpoint that allows Alert to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Alert.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Alert'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Alert'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Alert'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+          description: ''
+    patch:
+      operationId: api_v1_Alerts_partial_update
+      description: API endpoint that allows Alert to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Alert.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAlert'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAlert'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAlert'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+          description: ''
+    delete:
+      operationId: api_v1_Alerts_destroy
+      description: API endpoint that allows Alert to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Alert.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/CompostOperations/:
     get:
       operationId: api_v1_CompostOperations_list
@@ -1335,10 +1572,6 @@ paths:
           enum:
           - json
           - jsonld
-      - in: query
-        name: responsible_agent
-        schema:
-          type: string
       - in: query
         name: title
         schema:
@@ -4965,10 +5198,6 @@ paths:
           - json
           - jsonld
       - in: query
-        name: responsible_agent
-        schema:
-          type: string
-      - in: query
         name: title
         schema:
           type: string
@@ -5681,6 +5910,48 @@ components:
       - name
       - purchase_date
       - seria_number
+    Alert:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        activityType:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 200
+        details:
+          type: string
+          nullable: true
+        severity:
+          $ref: '#/components/schemas/SeverityEnum'
+        validFrom:
+          type: string
+          format: date-time
+        validTo:
+          type: string
+          format: date-time
+        dateIssued:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        quantityValue:
+          $ref: '#/components/schemas/ObservationQuantityValueField'
+        relatedObservation:
+          type: string
+          format: uuid
+          nullable: true
+      required:
+      - activityType
+      - dateIssued
+      - id
+      - relatedObservation
+      - validFrom
+      - validTo
     AppliedAmmountField:
       type: object
       properties:
@@ -6550,6 +6821,20 @@ components:
       - id
       - observedProperty
       - phenomenonTime
+    ObservationQuantityValueField:
+      type: object
+      properties:
+        unit:
+          type: string
+          readOnly: true
+          nullable: true
+        hasValue:
+          type: string
+          readOnly: true
+          nullable: true
+      required:
+      - hasValue
+      - unit
     PatchedAddRawMaterialOperation:
       type: object
       properties:
@@ -6630,6 +6915,41 @@ components:
           type: string
           format: date-time
           readOnly: true
+    PatchedAlert:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        activityType:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 200
+        details:
+          type: string
+          nullable: true
+        severity:
+          $ref: '#/components/schemas/SeverityEnum'
+        validFrom:
+          type: string
+          format: date-time
+        validTo:
+          type: string
+          format: date-time
+        dateIssued:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        quantityValue:
+          $ref: '#/components/schemas/ObservationQuantityValueField'
+        relatedObservation:
+          type: string
+          format: uuid
+          nullable: true
     PatchedCompostOperation:
       type: object
       properties:
@@ -7373,6 +7693,20 @@ components:
       - invalidatedAtTime
       - isPricePer
       - isTargetedTowards
+    SeverityEnum:
+      enum:
+      - minor
+      - moderate
+      - severe
+      - major
+      - critical
+      type: string
+      description: |-
+        * `minor` - Minor
+        * `moderate` - Moderate
+        * `severe` - Severe
+        * `major` - Major
+        * `critical` - Critical
     SexEnum:
       enum:
       - 0
