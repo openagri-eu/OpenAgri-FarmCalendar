@@ -81,7 +81,7 @@ class ObservationForm(NestedActivityForm):
         _parent_exc = NestedActivityForm.Meta.exclude.copy()
         if 'parent_activity' in _parent_exc:
             _parent_exc.remove('parent_activity')
-        exclude = _parent_exc
+        exclude = _parent_exc + ['responsible_agent', 'agricultural_machinery']
 
 
 class AlertForm(NestedActivityForm):
