@@ -316,7 +316,7 @@ class ObservationSerializer(FarmCalendarActivitySerializer):
 class AlertSerializer(FarmCalendarActivitySerializer):
     validFrom = serializers.DateTimeField(source='start_datetime')
     validTo = serializers.DateTimeField(source='end_datetime')
-    # quantityValue = quantity_value_serializer_factory('value_unit', 'value')(source='*')
+    dateIssued = serializers.DateTimeField(source='parent_activity.start_datetime', allow_null=True, read_only=True, required=False)
     relatedObservation = URNRelatedField(
         class_names=['Observation'],
         queryset=Observation.objects.all(),
@@ -334,6 +334,7 @@ class AlertSerializer(FarmCalendarActivitySerializer):
             'severity',
             'validFrom',
             'validTo',
+            'dateIssued',
             'quantityValue',
             'relatedObservation',
         ]
