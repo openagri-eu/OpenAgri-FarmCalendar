@@ -13,3 +13,5 @@ django-filter==24.3
 requests==2.32.3
 django-autocomplete-light==3.11.0
 drf-nested-routers==0.94.1
+numpy==2.3.2
+shapely==2.1.1

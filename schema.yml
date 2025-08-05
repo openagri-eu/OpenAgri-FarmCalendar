@@ -3790,6 +3790,11 @@ paths:
       description: API endpoint that allows FarmParcel to be viewed or edited.
       parameters:
       - in: query
+        name: contains_point
+        schema:
+          type: string
+        description: 'Filter parcels containing this point. Format (EPSG:4326): ''latitude,longitude'''
+      - in: query
         name: farm
         schema:
           type: string
