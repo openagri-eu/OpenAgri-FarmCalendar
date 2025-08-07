@@ -266,7 +266,7 @@ class MadeBySensorFieldSerializer(serializers.Serializer):
 
     def to_representation(self, instance):
         uuid_orig_str = getattr(instance, 'sensor_id', '')
-        if uuid_orig_str is None or uuid_orig_str is '':
+        if uuid_orig_str is None or uuid_orig_str == '':
             return {}
         hash_uuid = str(uuid.uuid5(uuid.NAMESPACE_DNS, uuid_orig_str))
         return {
