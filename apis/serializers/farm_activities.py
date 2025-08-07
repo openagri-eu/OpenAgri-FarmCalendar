@@ -16,6 +16,7 @@ from farm_management.models import (
 from farm_activities.models import (
     FarmCalendarActivityType,
     FarmCalendarActivity,
+    Alert,
     FertilizationOperation,
     IrrigationOperation,
     CropProtectionOperation,Observation,
@@ -55,6 +56,36 @@ def quantity_value_serializer_factory(unit_field, value_field):
     return GenericQuantityValueFieldSerializer
 
 
+def observation_ref_quantity_value_serializer_factory(unit_field, value_field):
+
+    class ObservationQuantityValueFieldSerializer(serializers.Serializer):
+        unit = serializers.CharField(allow_null=True, read_only=True, required=False)
+        hasValue = serializers.CharField(allow_null=True, read_only=True, required=False)
+
+
+        def to_representation(self, instance):
+            instanced_observation = None
+            try:
+                instanced_observation = instance.observation
+            except Observation.DoesNotExist:
+                return {}
+
+            value = getattr(instanced_observation, value_field)
+            unit = getattr(instanced_observation, unit_field)
+            uuid_orig_str = "".join([
+                str(getattr(instanced_observation, unit_field, '')),
+                str(getattr(instanced_observation, value_field, ''),)
+            ])
+            hash_uuid = str(uuid.uuid5(uuid.NAMESPACE_DNS, uuid_orig_str))
+            return {
+                '@id': generate_urn('QuantityValue',obj_id=hash_uuid),
+                '@type': 'QuantityValue',
+                'unit': unit,
+                'hasValue': value,
+            }
+    return ObservationQuantityValueFieldSerializer
+
+
 class FarmCalendarActivitySerializer(serializers.ModelSerializer):
     activityType = URNRelatedField(class_names=['FarmCalendarActivityType'], source='activity_type', queryset=FarmCalendarActivityType.objects.all())
     hasStartDatetime = serializers.DateTimeField(source='start_datetime')
@@ -91,7 +122,7 @@ class FarmCalendarActivityTypeSerializer(serializers.ModelSerializer):
 
         fields = [
             'id',
-            'name', 'description',
+            'name', 'description', 'category',
             'background_color', 'border_color', 'text_color',
         ]
 
@@ -277,6 +308,39 @@ class ObservationSerializer(FarmCalendarActivitySerializer):
             validated_data['parent_activity'] = CompostOperation.objects.get(pk=self.context['view'].kwargs.get('compost_operation_pk'))
 
         return super().create(validated_data)
+
+
+class AlertSerializer(FarmCalendarActivitySerializer):
+    validFrom = serializers.DateTimeField(source='start_datetime')
+    validTo = serializers.DateTimeField(source='end_datetime')
+    dateIssued = serializers.DateTimeField(source='parent_activity.start_datetime', allow_null=True, read_only=True, required=False)
+    relatedObservation = URNRelatedField(
+        class_names=['Observation'],
+        queryset=Observation.objects.all(),
+        source='parent_activity',
+        allow_null=True
+    )
+    quantityValue = observation_ref_quantity_value_serializer_factory('value_unit', 'value')(source='parent_activity', required=False)
+
+    class Meta:
+        model = Alert
+        fields = [
+            'id',
+            'activityType',
+            'title', 'details',
+            'severity',
+            'validFrom',
+            'validTo',
+            'dateIssued',
+            'quantityValue',
+            'relatedObservation',
+        ]
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation.update({'@type': 'Alert'})
+        json_ld_representation = representation
+        return json_ld_representation
 
 
 class CropStressIndicatorObservationSerializer(ObservationSerializer):

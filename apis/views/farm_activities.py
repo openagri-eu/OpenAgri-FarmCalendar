@@ -3,6 +3,7 @@ from rest_framework import permissions, viewsets
 from farm_activities.models import (
     FarmCalendarActivity,
     FarmCalendarActivityType,
+    Alert,
     FertilizationOperation,
     IrrigationOperation,
     CropProtectionOperation,
@@ -16,6 +17,7 @@ from farm_activities.models import (
 from ..serializers import (
     FarmCalendarActivitySerializer,
     FarmCalendarActivityTypeSerializer,
+    AlertSerializer,
     FertilizationOperationSerializer,
     IrrigationOperationSerializer,
     CropProtectionOperationSerializer,
@@ -47,6 +49,16 @@ class FarmCalendarActivityTypeViewSet(viewsets.ModelViewSet):
     serializer_class = FarmCalendarActivityTypeSerializer
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['name', ]
+
+
+class AlertViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Alert to be viewed or edited.
+    """
+    queryset = Alert.objects.all().order_by('-start_datetime')
+    serializer_class = AlertSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    filterset_fields = ['title', 'activity_type', 'severity']
 
 
 class FertilizationOperationViewSet(viewsets.ModelViewSet):
@@ -92,7 +104,7 @@ class ObservationViewSet(viewsets.ModelViewSet):
     queryset = Observation.objects.all().order_by('-start_datetime')
     serializer_class = ObservationSerializer
     permission_classes = [permissions.IsAuthenticated]
-    filterset_fields = ['title','activity_type', 'responsible_agent']
+    filterset_fields = ['title','activity_type']
 
     def get_queryset(self):
         queryset = super().get_queryset()
