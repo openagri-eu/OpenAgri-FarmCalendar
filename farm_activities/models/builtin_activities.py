@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from django.conf import settings
 
-from .base import FarmCalendarActivity, Observation
+from .base import FarmCalendarActivity, Observation, BaseParcelAreaObservation
 
 
 class FertilizationOperation(FarmCalendarActivity):
@@ -79,17 +79,6 @@ class CropStressIndicatorObservation(Observation):
     crop = models.ForeignKey('farm_management.FarmCrop', on_delete=models.CASCADE, blank=False, null=False)
 
 
-class YieldPredictionObservation(Observation):
-
-    ACTIVITY_NAME = settings.DEFAULT_CALENDAR_ACTIVITY_TYPES['yield_prediction']['name']
-
-    class Meta:
-        verbose_name = "Yield Prediction Observation"
-        verbose_name_plural = "Yield Prediction Observations"
-
-    crop = models.ForeignKey('farm_management.FarmCrop', on_delete=models.CASCADE, blank=False, null=False)
-
-
 class CropGrowthStageObservation(Observation):
     ACTIVITY_NAME = settings.DEFAULT_CALENDAR_ACTIVITY_TYPES['crop_growth_stage']['name']
 
@@ -103,6 +92,40 @@ class CropGrowthStageObservation(Observation):
         self.crop.growth_stage = self.value
         self.crop.save()
         super().save(*args, **kwargs)
+
+
+class YieldPredictionObservation(BaseParcelAreaObservation):
+    ACTIVITY_NAME = settings.DEFAULT_CALENDAR_ACTIVITY_TYPES['yield_prediction']['name']
+
+    class Meta:
+        verbose_name = "Yield Prediction Observation"
+        verbose_name_plural = "Yield Prediction Observations"
+
+
+class DiseaseDetectionObservation(BaseParcelAreaObservation):
+    ACTIVITY_NAME = settings.DEFAULT_CALENDAR_ACTIVITY_TYPES['disease_detection']['name']
+
+    class Meta:
+        verbose_name = "Disease Detection Observation"
+        verbose_name_plural = "Disease Detection Observations"
+
+
+class VigorEstimationObservation(BaseParcelAreaObservation):
+    ACTIVITY_NAME = settings.DEFAULT_CALENDAR_ACTIVITY_TYPES['vigor_estimation']['name']
+
+    class Meta:
+        verbose_name = "Vigor Estimation Observation"
+        verbose_name_plural = "Vigor Estimation Observations"
+
+
+class SprayingRecommendationObservation(BaseParcelAreaObservation):
+    ACTIVITY_NAME = settings.DEFAULT_CALENDAR_ACTIVITY_TYPES['spraying_recommendation']['name']
+
+    class Meta:
+        verbose_name = "Spraying Recommendation Observation"
+        verbose_name_plural = "Spraying Recommendation Observations"
+
+    pesticide = models.ForeignKey('farm_management.Pesticide', on_delete=models.SET_NULL, blank=True, null=True)
 
 
 class CompostOperation(FarmCalendarActivity):
