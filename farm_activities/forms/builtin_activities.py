@@ -24,6 +24,10 @@ from ..models import (
     CropStressIndicatorObservation,
     CropGrowthStageObservation,
     CompostTurningOperation,
+    YieldPredictionObservation,
+    DiseaseDetectionObservation,
+    VigorEstimationObservation,
+    SprayingRecommendationObservation,
 )
 from farm_management.models import CompostMaterial
 
@@ -54,6 +58,26 @@ class CropStressIndicatorObservationForm(ObservationForm):
 class CropGrowthStageObservationForm(ObservationForm):
     class Meta(ObservationForm.Meta):
         model = CropGrowthStageObservation
+
+
+class YieldPredictionObservationForm(ObservationForm):
+    class Meta(ObservationForm.Meta):
+        model = YieldPredictionObservation
+
+
+class DiseaseDetectionObservationForm(ObservationForm):
+    class Meta(ObservationForm.Meta):
+        model = DiseaseDetectionObservation
+
+
+class VigorEstimationObservationForm(ObservationForm):
+    class Meta(ObservationForm.Meta):
+        model = VigorEstimationObservation
+
+
+class SprayingRecommendationObservationForm(ObservationForm):
+    class Meta(ObservationForm.Meta):
+        model = SprayingRecommendationObservation
 
 
 class CompostOperationForm(ParentActivityForm):

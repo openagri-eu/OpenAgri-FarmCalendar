@@ -7,6 +7,10 @@ from farm_activities.models import (
     FertilizationOperation,
     IrrigationOperation,
     CropProtectionOperation,
+    YieldPredictionObservation,
+    DiseaseDetectionObservation,
+    VigorEstimationObservation,
+    SprayingRecommendationObservation,
     Observation,
     CropStressIndicatorObservation,
     CropGrowthStageObservation,
@@ -21,6 +25,10 @@ from ..serializers import (
     FertilizationOperationSerializer,
     IrrigationOperationSerializer,
     CropProtectionOperationSerializer,
+    YieldPredictionObservationSerializer,
+    DiseaseDetectionObservationSerializer,
+    VigorEstimationObservationSerializer,
+    SprayingRecommendationObservationSerializer,
     ObservationSerializer,
     CropStressIndicatorObservationSerializer,
     CropGrowthStageObservationSerializer,
@@ -130,6 +138,46 @@ class CropGrowthStageObservationViewSet(viewsets.ModelViewSet):
     serializer_class = CropGrowthStageObservationSerializer
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['title','activity_type', 'responsible_agent']
+
+
+class YieldPredictionObservationViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows YieldPrediction to be viewed or edited.
+    """
+    queryset = YieldPredictionObservation.objects.all().order_by('-start_datetime')
+    serializer_class = YieldPredictionObservationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    filterset_fields = ['title','activity_type', 'parcel']
+
+
+class DiseaseDetectionObservationViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows DiseaseDetection to be viewed or edited.
+    """
+    queryset = DiseaseDetectionObservation.objects.all().order_by('-start_datetime')
+    serializer_class = DiseaseDetectionObservationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    filterset_fields = ['title','activity_type', 'parcel']
+
+
+class VigorEstimationObservationViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows VigorEstimation to be viewed or edited.
+    """
+    queryset = VigorEstimationObservation.objects.all().order_by('-start_datetime')
+    serializer_class = VigorEstimationObservationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    filterset_fields = ['title','activity_type', 'parcel']
+
+
+class SprayingRecommendationObservationViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows SprayingRecommendation to be viewed or edited.
+    """
+    queryset = SprayingRecommendationObservation.objects.all().order_by('-start_datetime')
+    serializer_class = SprayingRecommendationObservationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    filterset_fields = ['title','activity_type', 'parcel']
 
 
 class CompostOperationViewSet(viewsets.ModelViewSet):

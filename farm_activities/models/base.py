@@ -129,11 +129,13 @@ class Alert(FarmCalendarActivity):
 
 
     severity = models.CharField(_('Severity'), max_length=255, choices=AlertSeverityChoices.choices, default=AlertSeverityChoices.MODERATE)
-    # category from title
-    # validFrom from start_datetime
-    # "validTo": from end_datetime
 
-    #ignore this and only use the ones from the referenced observation
-    # value = models.CharField(max_length=255)
-    # value_unit = models.CharField(max_length=255, blank=True, null=True)
-    # parent_activity is relatedObservation
+
+class BaseParcelAreaObservation(Observation):
+    parcel = models.ForeignKey('farm_management.FarmParcel', on_delete=models.CASCADE, verbose_name=_('Has Parcel'))
+    area = models.DecimalField(_('Has Area'), max_digits=15, decimal_places=2, default=0.0)
+
+    class Meta:
+        abstract = True
+        verbose_name = "Base Parcel Area Observation"
+        verbose_name_plural = "Base Parcel Area Observations"

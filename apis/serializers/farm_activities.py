@@ -22,6 +22,10 @@ from farm_activities.models import (
     CropProtectionOperation,Observation,
     CropStressIndicatorObservation,
     CropGrowthStageObservation,
+    YieldPredictionObservation,
+    DiseaseDetectionObservation,
+    VigorEstimationObservation,
+    SprayingRecommendationObservation,
     CompostOperation,
     AddRawMaterialOperation,
     AddRawMaterialCompostQuantity,
@@ -265,7 +269,7 @@ class MadeBySensorFieldSerializer(serializers.Serializer):
 
     def to_representation(self, instance):
         uuid_orig_str = getattr(instance, 'sensor_id', '')
-        if uuid_orig_str is None or uuid_orig_str is '':
+        if uuid_orig_str is None or uuid_orig_str == '':
             return {}
         hash_uuid = str(uuid.uuid5(uuid.NAMESPACE_DNS, uuid_orig_str))
         return {
@@ -370,6 +374,7 @@ class CropStressIndicatorObservationSerializer(ObservationSerializer):
 
         return json_ld_representation
 
+
 class CropGrowthStageObservationSerializer(ObservationSerializer):
     hasAgriCrop = URNRelatedField(
         class_names=['FarmCrop'],
@@ -397,6 +402,84 @@ class CropGrowthStageObservationSerializer(ObservationSerializer):
 
         return json_ld_representation
 
+
+
+class BaseParcelAreaObservationSerializer(ObservationSerializer):
+    hasAgriParcel = URNRelatedField(
+        source='parcel',
+        class_names=['Parcel'],
+        queryset=FarmParcel.objects.all(),
+    )
+
+    hasArea = serializers.DecimalField(source='area', max_digits=15, decimal_places=2)
+
+    class Meta:
+        fields = [
+            'id',
+            'activityType', 'title', 'details',
+            'phenomenonTime',
+            'hasEndDatetime',
+            'madeBySensor',
+            'hasAgriParcel',
+            'hasArea',
+            'hasResult',
+            'observedProperty',
+        ]
+
+
+class YieldPredictionObservationSerializer(BaseParcelAreaObservationSerializer):
+    class Meta(BaseParcelAreaObservationSerializer.Meta):
+        model = YieldPredictionObservation
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation.update({'@type': 'YieldPrediction'})
+        json_ld_representation = representation
+
+        return json_ld_representation
+
+
+class DiseaseDetectionObservationSerializer(BaseParcelAreaObservationSerializer):
+    class Meta(BaseParcelAreaObservationSerializer.Meta):
+        model = DiseaseDetectionObservation
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation.update({'@type': 'DiseaseDetection'})
+        json_ld_representation = representation
+
+        return json_ld_representation
+
+
+class VigorEstimationObservationSerializer(BaseParcelAreaObservationSerializer):
+    class Meta(BaseParcelAreaObservationSerializer.Meta):
+        model = VigorEstimationObservation
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation.update({'@type': 'VigorEstimation'})
+        json_ld_representation = representation
+
+        return json_ld_representation
+
+
+class SprayingRecommendationObservationSerializer(BaseParcelAreaObservationSerializer):
+    usesPesticide = URNRelatedField(
+        class_names=['Pesticide'],
+        queryset=Pesticide.objects.all(),
+        source='pesticide',
+        allow_null=True
+    )
+    class Meta(BaseParcelAreaObservationSerializer.Meta):
+        model = SprayingRecommendationObservation
+        fields = BaseParcelAreaObservationSerializer.Meta.fields + ['usesPesticide']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation.update({'@type': 'SprayingRecommendation'})
+        json_ld_representation = representation
+
+        return json_ld_representation
 
 
 class AddRawMaterialCompostQuantitySerializer(serializers.ModelSerializer):
