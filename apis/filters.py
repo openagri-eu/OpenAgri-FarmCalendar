@@ -8,6 +8,23 @@ from shapely.wkt import loads
 from shapely.geometry import Point
 
 from farm_management.models import FarmParcel
+from farm_activities.models import (
+    FarmCalendarActivity,
+    Alert,
+    # FertilizationOperation,
+    # IrrigationOperation,
+    # CropProtectionOperation,
+    # YieldPredictionObservation,
+    # DiseaseDetectionObservation,
+    # VigorEstimationObservation,
+    # SprayingRecommendationObservation,
+    # Observation,
+    # CropStressIndicatorObservation,
+    # CropGrowthStageObservation,
+    # CompostOperation,
+    # AddRawMaterialOperation,
+    # CompostTurningOperation,
+)
 
 
 @lru_cache(maxsize=10)
@@ -53,3 +70,19 @@ class FarmParcelFilter(filters.FilterSet):
 
         except (ValueError, TypeError, AttributeError):
             return queryset.none()
+
+class BaseCalendarActivityFilter(filters.FilterSet):
+    fromDate = filters.DateTimeFilter(field_name='start_datetime', lookup_expr='gte')
+    toDate = filters.DateTimeFilter(field_name='start_datetime', lookup_expr='lte')
+
+    class Meta:
+        fields = ['title', 'activity_type', 'responsible_agent']
+
+class FarmCalendarActivityFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = FarmCalendarActivity
+
+class AlertFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = Alert
+        fields = ['title', 'activity_type', 'severity']

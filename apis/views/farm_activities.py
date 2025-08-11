@@ -36,17 +36,12 @@ from ..serializers import (
     AddRawMaterialOperationSerializer,
     CompostTurningOperationSerializer,
 )
+from ..filters import (
+    FarmCalendarActivityFilter,
+    AlertFilter,
+)
 
 
-class FarmCalendarActivityViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows FarmCalendarActivity to be viewed or edited.
-    """
-    queryset = FarmCalendarActivity.objects.all().order_by('-start_datetime')
-    serializer_class = FarmCalendarActivitySerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    filterset_fields = ['title', 'activity_type', 'responsible_agent']
 
 
 class FarmCalendarActivityTypeViewSet(viewsets.ModelViewSet):
@@ -58,6 +53,15 @@ class FarmCalendarActivityTypeViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['name', ]
 
+class FarmCalendarActivityViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows FarmCalendarActivity to be viewed or edited.
+    """
+    queryset = FarmCalendarActivity.objects.all().order_by('-start_datetime')
+    serializer_class = FarmCalendarActivitySerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    filterset_class = FarmCalendarActivityFilter
 
 class AlertViewSet(viewsets.ModelViewSet):
     """
@@ -68,6 +72,7 @@ class AlertViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['title', 'activity_type', 'severity']
 
+    filterset_class = AlertFilter
 
 class FertilizationOperationViewSet(viewsets.ModelViewSet):
     """
@@ -77,7 +82,6 @@ class FertilizationOperationViewSet(viewsets.ModelViewSet):
     serializer_class = FertilizationOperationSerializer
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['title', 'activity_type', 'responsible_agent']
-
 
 class IrrigationOperationViewSet(viewsets.ModelViewSet):
     """
@@ -94,7 +98,6 @@ class IrrigationOperationViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(parent_activity=self.kwargs['compost_operation_pk'])
         return queryset
 
-
 class CropProtectionOperationViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows CropProtectionOperation to be viewed or edited.
@@ -103,7 +106,6 @@ class CropProtectionOperationViewSet(viewsets.ModelViewSet):
     serializer_class = CropProtectionOperationSerializer
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['title', 'activity_type', 'responsible_agent']
-
 
 class ObservationViewSet(viewsets.ModelViewSet):
     """
@@ -129,7 +131,6 @@ class CropStressIndicatorObservationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['title','activity_type', 'responsible_agent']
 
-
 class CropGrowthStageObservationViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows CropGrowthStageObservation to be viewed or edited.
@@ -138,7 +139,6 @@ class CropGrowthStageObservationViewSet(viewsets.ModelViewSet):
     serializer_class = CropGrowthStageObservationSerializer
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['title','activity_type', 'responsible_agent']
-
 
 class YieldPredictionObservationViewSet(viewsets.ModelViewSet):
     """
@@ -149,7 +149,6 @@ class YieldPredictionObservationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['title','activity_type', 'parcel']
 
-
 class DiseaseDetectionObservationViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows DiseaseDetection to be viewed or edited.
@@ -158,7 +157,6 @@ class DiseaseDetectionObservationViewSet(viewsets.ModelViewSet):
     serializer_class = DiseaseDetectionObservationSerializer
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['title','activity_type', 'parcel']
-
 
 class VigorEstimationObservationViewSet(viewsets.ModelViewSet):
     """
@@ -169,7 +167,6 @@ class VigorEstimationObservationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['title','activity_type', 'parcel']
 
-
 class SprayingRecommendationObservationViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows SprayingRecommendation to be viewed or edited.
@@ -179,7 +176,6 @@ class SprayingRecommendationObservationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['title','activity_type', 'parcel']
 
-
 class CompostOperationViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows CompostOperation to be viewed or edited.
@@ -188,7 +184,6 @@ class CompostOperationViewSet(viewsets.ModelViewSet):
     serializer_class = CompostOperationSerializer
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ['title','activity_type', 'compost_pile_id']
-
 
 class AddRawMaterialOperationViewSet(viewsets.ModelViewSet):
     """
