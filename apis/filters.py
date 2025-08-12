@@ -8,6 +8,23 @@ from shapely.wkt import loads
 from shapely.geometry import Point
 
 from farm_management.models import FarmParcel
+from farm_activities.models import (
+    FarmCalendarActivity,
+    Alert,
+    FertilizationOperation,
+    IrrigationOperation,
+    CropProtectionOperation,
+    YieldPredictionObservation,
+    DiseaseDetectionObservation,
+    VigorEstimationObservation,
+    SprayingRecommendationObservation,
+    Observation,
+    CropStressIndicatorObservation,
+    CropGrowthStageObservation,
+    CompostOperation,
+    AddRawMaterialOperation,
+    CompostTurningOperation,
+)
 
 
 @lru_cache(maxsize=10)
@@ -53,3 +70,84 @@ class FarmParcelFilter(filters.FilterSet):
 
         except (ValueError, TypeError, AttributeError):
             return queryset.none()
+
+class BaseCalendarActivityFilter(filters.FilterSet):
+    fromDate = filters.DateTimeFilter(field_name='start_datetime', lookup_expr='gte')
+    toDate = filters.DateTimeFilter(field_name='start_datetime', lookup_expr='lte')
+
+    class Meta:
+        fields = ['title', 'activity_type', 'responsible_agent']
+
+class FarmCalendarActivityFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = FarmCalendarActivity
+
+class AlertFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = Alert
+        fields = ['title', 'activity_type', 'severity']
+
+class FertilizationOperationFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = FertilizationOperation
+        fields = ['title', 'activity_type', 'responsible_agent']
+
+class IrrigationOperationFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = IrrigationOperation
+        fields = ['title', 'activity_type', 'responsible_agent']
+
+class CropProtectionOperationFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = CropProtectionOperation
+        fields = ['title', 'activity_type', 'responsible_agent']
+
+class ObservationFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = Observation
+        fields = ['title', 'activity_type']
+
+class CropStressIndicatorObservationFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = CropStressIndicatorObservation
+        fields = ['title', 'activity_type', 'responsible_agent']
+
+class CropGrowthStageObservationFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = CropGrowthStageObservation
+        fields = ['title', 'activity_type', 'responsible_agent']
+
+class YieldPredictionObservationFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = YieldPredictionObservation
+        fields = ['title', 'activity_type', 'parcel']
+
+class DiseaseDetectionObservationFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = DiseaseDetectionObservation
+        fields = ['title', 'activity_type', 'parcel']
+
+class VigorEstimationObservationFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = VigorEstimationObservation
+        fields = ['title', 'activity_type', 'parcel']
+
+class SprayingRecommendationObservationFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = SprayingRecommendationObservation
+        fields = ['title', 'activity_type', 'parcel']
+
+class CompostOperationFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = CompostOperation
+        fields = ['title', 'activity_type', 'compost_pile_id']
+
+class AddRawMaterialOperationFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = AddRawMaterialOperation
+        fields = ['title', 'activity_type']
+
+class CompostTurningOperationFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = CompostTurningOperation
+        fields = ['title', 'activity_type']

@@ -23,9 +23,19 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -482,6 +492,11 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: severity
         schema:
           type: string
@@ -501,6 +516,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -723,9 +743,19 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -805,9 +835,19 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -1062,9 +1102,19 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -1318,6 +1368,11 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -1325,6 +1380,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -1573,9 +1633,19 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -1965,9 +2035,19 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -2192,6 +2272,11 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -2199,6 +2284,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -2423,6 +2513,11 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -2430,6 +2525,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -2653,6 +2753,11 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -2660,6 +2765,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -2878,6 +2988,11 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: parcel
         schema:
           type: string
@@ -2886,6 +3001,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -3569,6 +3689,11 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -3576,6 +3701,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -3782,6 +3912,18 @@ paths:
       description: API endpoint that allows FarmCalendarActivityType to be viewed
         or edited.
       parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+          enum:
+          - activity
+          - alert
+          - observation
+        description: |-
+          * `activity` - Activity
+          * `observation` - Observation
+          * `alert` - Alert
       - in: query
         name: format
         schema:
@@ -4508,6 +4650,11 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -4515,6 +4662,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -5199,6 +5351,11 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -5206,6 +5363,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -5424,9 +5586,19 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -5874,6 +6046,11 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: parcel
         schema:
           type: string
@@ -5882,6 +6059,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -6105,6 +6287,11 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: parcel
         schema:
           type: string
@@ -6113,6 +6300,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -6331,6 +6523,11 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
         name: parcel
         schema:
           type: string
@@ -6339,6 +6536,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
