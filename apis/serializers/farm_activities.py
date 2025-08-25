@@ -232,7 +232,7 @@ class IrrigationOperationSerializer(GenericOperationSerializer):
 
     def create(self, validated_data):
         if self.context['view'].kwargs.get('compost_operation_pk'):
-            validated_data['parent_activity'] = self.context['view'].kwargs.get('compost_operation_pk')
+            validated_data['parent_activity'] = CompostOperation.objects.get(pk=self.context['view'].kwargs.get('compost_operation_pk'))
 
         return super().create(validated_data)
 
@@ -529,7 +529,7 @@ class AddRawMaterialOperationSerializer(GenericOperationSerializer):
 
     def create(self, validated_data):
         if self.context['view'].kwargs.get('compost_operation_pk'):
-            validated_data['parent_activity'] = self.context['view'].kwargs.get('compost_operation_pk')
+            validated_data['parent_activity'] = CompostOperation.objects.get(pk=self.context['view'].kwargs.get('compost_operation_pk'))
 
         compost_data = validated_data.pop('addrawmaterialcompostquantity_set', [])
         operation = super().create(validated_data)
@@ -574,7 +574,7 @@ class CompostTurningOperationSerializer(GenericOperationSerializer):
 
     def create(self, validated_data):
         if self.context['view'].kwargs.get('compost_operation_pk'):
-            validated_data['parent_activity'] = self.context['view'].kwargs.get('compost_operation_pk')
+            validated_data['parent_activity'] = CompostOperation.objects.get(pk=self.context['view'].kwargs.get('compost_operation_pk'))
 
         return super().create(validated_data)
 
