@@ -119,7 +119,7 @@ class FarmCalendarActivitySerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
 
         json_ld_representation = {
-            '@type': 'Operation',
+            '@type': 'FarmCalendarActivity',
             '@id': generate_urn(instance.__class__.__name__, obj_id=representation.pop('id')),
             **representation
         }
