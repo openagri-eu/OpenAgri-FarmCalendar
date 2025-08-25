@@ -20,7 +20,6 @@ class FertilizationOperation(FarmCalendarActivity):
 
     application_method = models.CharField(max_length=255, blank=True, null=True)
 
-    operated_on = models.ForeignKey('farm_management.FarmParcel', on_delete=models.CASCADE)
     fertilizer = models.ForeignKey('farm_management.Fertilizer', on_delete=models.SET_NULL, blank=True, null=True)
 
 
@@ -43,8 +42,6 @@ class IrrigationOperation(FarmCalendarActivity):
     applied_amount = models.DecimalField(max_digits=10, decimal_places=2)
     applied_amount_unit = models.CharField(max_length=255)
 
-    operated_on = models.ForeignKey('farm_management.FarmParcel', on_delete=models.CASCADE, blank=True, null=True)
-
     irrigation_system = models.CharField(max_length=50, choices=IrrigationSystemChoices.choices,
                                         default=IrrigationSystemChoices.SPRINKLER)
 
@@ -60,11 +57,9 @@ class CropProtectionOperation(FarmCalendarActivity):
         verbose_name = "Crop Protection Operation"
         verbose_name_plural = "Crop Protection Operations"
 
-
     applied_amount = models.DecimalField(max_digits=10, decimal_places=2)
     applied_amount_unit = models.CharField(max_length=255)
 
-    operated_on = models.ForeignKey('farm_management.FarmParcel', on_delete=models.CASCADE)
     pesticide = models.ForeignKey('farm_management.Pesticide', on_delete=models.SET_NULL, blank=True, null=True)
 
 
