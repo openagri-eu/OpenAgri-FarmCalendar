@@ -79,6 +79,13 @@ class FarmCalendarActivity(models.Model):
     agricultural_machinery = models.ManyToManyField('farm_management.AgriculturalMachine', related_name='used_in_operations', blank=True)
     # weather_observation = models.ManyToManyField('farm_management.AgriculturalMachine', related_name='used_in_operations', blank=True, null=True)?
 
+    parcel_temp = models.ForeignKey(
+        'farm_management.FarmParcel',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name=_('Has Parcel')
+    )
 
 
     parent_activity = models.ForeignKey(

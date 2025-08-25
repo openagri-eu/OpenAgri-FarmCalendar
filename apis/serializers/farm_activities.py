@@ -166,7 +166,7 @@ class GenericOperationSerializer(FarmCalendarActivitySerializer):
     operatedOn = URNRelatedField(
         class_names=['Parcel'],
         queryset=FarmParcel.objects.all(),
-        source='operated_on'
+        source='parcel'
     )
 
 class FertilizationOperationSerializer(GenericOperationSerializer):
