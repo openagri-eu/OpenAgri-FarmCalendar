@@ -202,12 +202,6 @@ class IrrigationOperationSerializer(GenericOperationSerializer):
         choices=IrrigationOperation.IrrigationSystemChoices.choices,
         source='irrigation_system'
     )
-    operatedOn = URNRelatedField(
-        class_names=['Parcel'],
-        queryset=FarmParcel.objects.all(),
-        source='operated_on',
-        allow_null=True
-    )
 
     class Meta:
         model = IrrigationOperation
