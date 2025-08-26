@@ -35,7 +35,6 @@ class FarmCalendarActivityForm(forms.ModelForm):
         exclude = [
             'id',
             'parent_activity',
-            'parcel_temp'
         ]
         widgets = {
             "start_datetime": forms.DateTimeInput(attrs={"type": "datetime-local"}),
