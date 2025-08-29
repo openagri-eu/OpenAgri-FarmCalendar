@@ -99,12 +99,19 @@ class FarmCalendarActivitySerializer(serializers.ModelSerializer):
 
     usesAgriculturalMachinery = URNRelatedField(class_names=['AgriculturalMachine'], source='agricultural_machinery', many=True, queryset=AgriculturalMachine.objects.all())
 
+    hasAgriParcel = URNRelatedField(
+        source='parcel',
+        class_names=['Parcel'],
+        queryset=FarmParcel.objects.all(),
+    )
+
     class Meta:
         model = FarmCalendarActivity
         fields = [
             'id',
             'activityType', 'title', 'details',
             'hasStartDatetime', 'hasEndDatetime',
+            'hasAgriParcel',
             'responsibleAgent', 'usesAgriculturalMachinery'
         ]
 
@@ -112,7 +119,7 @@ class FarmCalendarActivitySerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
 
         json_ld_representation = {
-            '@type': 'Operation',
+            '@type': 'FarmCalendarActivity',
             '@id': generate_urn(instance.__class__.__name__, obj_id=representation.pop('id')),
             **representation
         }
@@ -166,7 +173,7 @@ class GenericOperationSerializer(FarmCalendarActivitySerializer):
     operatedOn = URNRelatedField(
         class_names=['Parcel'],
         queryset=FarmParcel.objects.all(),
-        source='operated_on'
+        source='parcel'
     )
 
 class FertilizationOperationSerializer(GenericOperationSerializer):
@@ -201,12 +208,6 @@ class IrrigationOperationSerializer(GenericOperationSerializer):
     usesIrrigationSystem = serializers.ChoiceField(
         choices=IrrigationOperation.IrrigationSystemChoices.choices,
         source='irrigation_system'
-    )
-    operatedOn = URNRelatedField(
-        class_names=['Parcel'],
-        queryset=FarmParcel.objects.all(),
-        source='operated_on',
-        allow_null=True
     )
 
     class Meta:
@@ -292,6 +293,7 @@ class ObservationSerializer(FarmCalendarActivitySerializer):
             'title', 'details',
             'phenomenonTime',
             'hasEndDatetime',
+            'hasAgriParcel',
             'madeBySensor',
             # 'responsibleAgent', 'usesAgriculturalMachinery',
             'hasResult',
@@ -333,6 +335,7 @@ class AlertSerializer(FarmCalendarActivitySerializer):
             'activityType',
             'title', 'details',
             'severity',
+            'hasAgriParcel',
             'validFrom',
             'validTo',
             'dateIssued',
@@ -361,6 +364,7 @@ class CropStressIndicatorObservationSerializer(ObservationSerializer):
             'phenomenonTime',
             'hasEndDatetime',
             'madeBySensor',
+            'hasAgriParcel',
             # 'responsibleAgent', 'usesAgriculturalMachinery',
             'hasAgriCrop',
             'hasResult',
@@ -390,6 +394,7 @@ class CropGrowthStageObservationSerializer(ObservationSerializer):
             'hasEndDatetime',
             'madeBySensor',
             # 'responsibleAgent', 'usesAgriculturalMachinery',
+            'hasAgriParcel',
             'hasAgriCrop',
             'hasResult',
             'observedProperty',
@@ -405,12 +410,6 @@ class CropGrowthStageObservationSerializer(ObservationSerializer):
 
 
 class BaseParcelAreaObservationSerializer(ObservationSerializer):
-    hasAgriParcel = URNRelatedField(
-        source='parcel',
-        class_names=['Parcel'],
-        queryset=FarmParcel.objects.all(),
-    )
-
     hasArea = serializers.DecimalField(source='area', max_digits=15, decimal_places=2)
 
     class Meta:
@@ -514,6 +513,7 @@ class AddRawMaterialOperationSerializer(GenericOperationSerializer):
             'id',
             'activityType', 'title', 'details',
             'hasStartDatetime', 'hasEndDatetime',
+            'operatedOn',
             'responsibleAgent', 'usesAgriculturalMachinery',
             'hasCompostMaterial'
         ]
@@ -562,6 +562,7 @@ class CompostTurningOperationSerializer(GenericOperationSerializer):
             'id',
             'activityType', 'title', 'details',
             'hasStartDatetime', 'hasEndDatetime',
+            'operatedOn',
             'responsibleAgent', 'usesAgriculturalMachinery',
         ]
 
@@ -620,6 +621,7 @@ class CompostOperationSerializer(FarmCalendarActivitySerializer):
             'activityType', 'title', 'details',
             'hasStartDatetime', 'hasEndDatetime',
             'responsibleAgent', 'usesAgriculturalMachinery',
+            'hasAgriParcel',
             'isOperatedOn',
             'hasNestedOperation', 'hasMeasurement'
         ]

@@ -28,6 +28,11 @@ paths:
           type: string
           format: date-time
       - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: title
         schema:
           type: string
@@ -497,6 +502,11 @@ paths:
           type: string
           format: date-time
       - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: severity
         schema:
           type: string
@@ -748,6 +758,11 @@ paths:
           type: string
           format: date-time
       - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: title
         schema:
           type: string
@@ -839,6 +854,11 @@ paths:
         schema:
           type: string
           format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
       - in: query
         name: title
         schema:
@@ -1107,6 +1127,11 @@ paths:
           type: string
           format: date-time
       - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: title
         schema:
           type: string
@@ -1373,6 +1398,11 @@ paths:
           type: string
           format: date-time
       - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -1637,6 +1667,11 @@ paths:
         schema:
           type: string
           format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
       - in: query
         name: title
         schema:
@@ -2040,6 +2075,11 @@ paths:
           type: string
           format: date-time
       - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: title
         schema:
           type: string
@@ -2276,6 +2316,11 @@ paths:
         schema:
           type: string
           format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
       - in: query
         name: responsible_agent
         schema:
@@ -2518,6 +2563,11 @@ paths:
           type: string
           format: date-time
       - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -2757,6 +2807,11 @@ paths:
         schema:
           type: string
           format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
       - in: query
         name: responsible_agent
         schema:
@@ -3693,6 +3748,11 @@ paths:
         schema:
           type: string
           format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
       - in: query
         name: responsible_agent
         schema:
@@ -4655,6 +4715,11 @@ paths:
           type: string
           format: date-time
       - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -5356,6 +5421,11 @@ paths:
           type: string
           format: date-time
       - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -5590,6 +5660,11 @@ paths:
         schema:
           type: string
           format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
       - in: query
         name: title
         schema:
@@ -6926,6 +7001,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        operatedOn:
+          type: string
+          format: uuid
         responsibleAgent:
           type: string
           nullable: true
@@ -6943,6 +7021,7 @@ components:
       - hasCompostMaterial
       - hasStartDatetime
       - id
+      - operatedOn
       - usesAgriculturalMachinery
     AddressField:
       type: object
@@ -7040,6 +7119,9 @@ components:
           nullable: true
         severity:
           $ref: '#/components/schemas/SeverityEnum'
+        hasAgriParcel:
+          type: string
+          format: uuid
         validFrom:
           type: string
           format: date-time
@@ -7060,6 +7142,7 @@ components:
       required:
       - activityType
       - dateIssued
+      - hasAgriParcel
       - id
       - relatedObservation
       - validFrom
@@ -7117,6 +7200,9 @@ components:
           items:
             type: string
             format: uuid
+        hasAgriParcel:
+          type: string
+          format: uuid
         isOperatedOn:
           type: string
         hasNestedOperation:
@@ -7133,6 +7219,7 @@ components:
           readOnly: true
       required:
       - activityType
+      - hasAgriParcel
       - hasMeasurement
       - hasNestedOperation
       - hasStartDatetime
@@ -7162,6 +7249,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        operatedOn:
+          type: string
+          format: uuid
         responsibleAgent:
           type: string
           nullable: true
@@ -7174,6 +7264,7 @@ components:
       - activityType
       - hasStartDatetime
       - id
+      - operatedOn
       - usesAgriculturalMachinery
     ContactPersonField:
       type: object
@@ -7212,6 +7303,9 @@ components:
           allOf:
           - $ref: '#/components/schemas/MadeBySensorField'
           nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
         hasAgriCrop:
           type: string
           format: uuid
@@ -7222,6 +7316,7 @@ components:
       required:
       - activityType
       - hasAgriCrop
+      - hasAgriParcel
       - hasResult
       - id
       - observedProperty
@@ -7311,6 +7406,9 @@ components:
           allOf:
           - $ref: '#/components/schemas/MadeBySensorField'
           nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
         hasAgriCrop:
           type: string
           format: uuid
@@ -7321,6 +7419,7 @@ components:
       required:
       - activityType
       - hasAgriCrop
+      - hasAgriParcel
       - hasResult
       - id
       - observedProperty
@@ -7518,6 +7617,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
         responsibleAgent:
           type: string
           nullable: true
@@ -7528,6 +7630,7 @@ components:
             format: uuid
       required:
       - activityType
+      - hasAgriParcel
       - hasStartDatetime
       - id
       - usesAgriculturalMachinery
@@ -7911,7 +8014,6 @@ components:
         operatedOn:
           type: string
           format: uuid
-          nullable: true
       required:
       - activityType
       - hasAppliedAmount
@@ -7965,6 +8067,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
         madeBySensor:
           allOf:
           - $ref: '#/components/schemas/MadeBySensorField'
@@ -7975,6 +8080,7 @@ components:
           type: string
       required:
       - activityType
+      - hasAgriParcel
       - hasResult
       - id
       - observedProperty
@@ -8016,6 +8122,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        operatedOn:
+          type: string
+          format: uuid
         responsibleAgent:
           type: string
           nullable: true
@@ -8091,6 +8200,9 @@ components:
           nullable: true
         severity:
           $ref: '#/components/schemas/SeverityEnum'
+        hasAgriParcel:
+          type: string
+          format: uuid
         validFrom:
           type: string
           format: date-time
@@ -8139,6 +8251,9 @@ components:
           items:
             type: string
             format: uuid
+        hasAgriParcel:
+          type: string
+          format: uuid
         isOperatedOn:
           type: string
         hasNestedOperation:
@@ -8176,6 +8291,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        operatedOn:
+          type: string
+          format: uuid
         responsibleAgent:
           type: string
           nullable: true
@@ -8211,6 +8329,9 @@ components:
           allOf:
           - $ref: '#/components/schemas/MadeBySensorField'
           nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
         hasAgriCrop:
           type: string
           format: uuid
@@ -8285,6 +8406,9 @@ components:
           allOf:
           - $ref: '#/components/schemas/MadeBySensorField'
           nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
         hasAgriCrop:
           type: string
           format: uuid
@@ -8452,6 +8576,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
         responsibleAgent:
           type: string
           nullable: true
@@ -8764,7 +8891,6 @@ components:
         operatedOn:
           type: string
           format: uuid
-          nullable: true
     PatchedObservation:
       type: object
       properties:
@@ -8788,6 +8914,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
         madeBySensor:
           allOf:
           - $ref: '#/components/schemas/MadeBySensorField'

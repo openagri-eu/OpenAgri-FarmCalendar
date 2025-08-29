@@ -79,6 +79,13 @@ class FarmCalendarActivity(models.Model):
     agricultural_machinery = models.ManyToManyField('farm_management.AgriculturalMachine', related_name='used_in_operations', blank=True)
     # weather_observation = models.ManyToManyField('farm_management.AgriculturalMachine', related_name='used_in_operations', blank=True, null=True)?
 
+    parcel = models.ForeignKey(
+        'farm_management.FarmParcel',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name=_('Has Parcel')
+    )
 
 
     parent_activity = models.ForeignKey(
@@ -132,7 +139,6 @@ class Alert(FarmCalendarActivity):
 
 
 class BaseParcelAreaObservation(Observation):
-    parcel = models.ForeignKey('farm_management.FarmParcel', on_delete=models.CASCADE, verbose_name=_('Has Parcel'))
     area = models.DecimalField(_('Has Area'), max_digits=15, decimal_places=2, default=0.0)
 
     class Meta:

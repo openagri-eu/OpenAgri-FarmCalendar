@@ -76,7 +76,7 @@ class BaseCalendarActivityFilter(filters.FilterSet):
     toDate = filters.DateTimeFilter(field_name='start_datetime', lookup_expr='lte')
 
     class Meta:
-        fields = ['title', 'activity_type', 'responsible_agent']
+        fields = ['title', 'activity_type', 'parcel', 'responsible_agent']
 
 class FarmCalendarActivityFilter(BaseCalendarActivityFilter):
     class Meta(BaseCalendarActivityFilter.Meta):
@@ -85,37 +85,37 @@ class FarmCalendarActivityFilter(BaseCalendarActivityFilter):
 class AlertFilter(BaseCalendarActivityFilter):
     class Meta(BaseCalendarActivityFilter.Meta):
         model = Alert
-        fields = ['title', 'activity_type', 'severity']
+        fields = ['title', 'activity_type', 'parcel', 'severity']
 
 class FertilizationOperationFilter(BaseCalendarActivityFilter):
     class Meta(BaseCalendarActivityFilter.Meta):
         model = FertilizationOperation
-        fields = ['title', 'activity_type', 'responsible_agent']
+        fields = ['title', 'activity_type', 'parcel', 'responsible_agent']
 
 class IrrigationOperationFilter(BaseCalendarActivityFilter):
     class Meta(BaseCalendarActivityFilter.Meta):
         model = IrrigationOperation
-        fields = ['title', 'activity_type', 'responsible_agent']
+        fields = ['title', 'activity_type', 'parcel', 'responsible_agent']
 
 class CropProtectionOperationFilter(BaseCalendarActivityFilter):
     class Meta(BaseCalendarActivityFilter.Meta):
         model = CropProtectionOperation
-        fields = ['title', 'activity_type', 'responsible_agent']
+        fields = ['title', 'activity_type', 'parcel', 'responsible_agent']
 
 class ObservationFilter(BaseCalendarActivityFilter):
     class Meta(BaseCalendarActivityFilter.Meta):
         model = Observation
-        fields = ['title', 'activity_type']
+        fields = ['title', 'activity_type', 'parcel']
 
 class CropStressIndicatorObservationFilter(BaseCalendarActivityFilter):
     class Meta(BaseCalendarActivityFilter.Meta):
         model = CropStressIndicatorObservation
-        fields = ['title', 'activity_type', 'responsible_agent']
+        fields = ['title', 'activity_type', 'parcel', 'responsible_agent']
 
 class CropGrowthStageObservationFilter(BaseCalendarActivityFilter):
     class Meta(BaseCalendarActivityFilter.Meta):
         model = CropGrowthStageObservation
-        fields = ['title', 'activity_type', 'responsible_agent']
+        fields = ['title', 'activity_type', 'parcel', 'responsible_agent']
 
 class YieldPredictionObservationFilter(BaseCalendarActivityFilter):
     class Meta(BaseCalendarActivityFilter.Meta):
@@ -140,14 +140,14 @@ class SprayingRecommendationObservationFilter(BaseCalendarActivityFilter):
 class CompostOperationFilter(BaseCalendarActivityFilter):
     class Meta(BaseCalendarActivityFilter.Meta):
         model = CompostOperation
-        fields = ['title', 'activity_type', 'compost_pile_id']
+        fields = ['title', 'activity_type', 'parcel', 'compost_pile_id']
 
 class AddRawMaterialOperationFilter(BaseCalendarActivityFilter):
     class Meta(BaseCalendarActivityFilter.Meta):
         model = AddRawMaterialOperation
-        fields = ['title', 'activity_type']
+        fields = ['title', 'activity_type', 'parcel']
 
 class CompostTurningOperationFilter(BaseCalendarActivityFilter):
     class Meta(BaseCalendarActivityFilter.Meta):
         model = CompostTurningOperation
-        fields = ['title', 'activity_type']
+        fields = ['title', 'activity_type', 'parcel']
