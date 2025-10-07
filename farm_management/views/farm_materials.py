@@ -103,8 +103,8 @@ class FertilizerListView(BaseTreatmentMaterialsListManagementView):
 
 class PesticideUpdateView(BaseTreatmentMaterialUpdateView):
     model = Pesticide
-    form_class = get_generic_treatment_materials_form(Fertilizer)
-    success_url = reverse_lazy('fertilizers')
+    form_class = get_generic_treatment_materials_form(Pesticide)
+    success_url = reverse_lazy('pesticides')
 
 
 class PesticideListView(BaseTreatmentMaterialsListManagementView):
