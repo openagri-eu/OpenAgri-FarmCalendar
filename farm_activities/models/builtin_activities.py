@@ -83,11 +83,6 @@ class CropGrowthStageObservation(Observation):
 
     crop = models.ForeignKey('farm_management.FarmCrop', on_delete=models.CASCADE, blank=False, null=False)
 
-    def save(self, *args, **kwargs):
-        self.crop.growth_stage = self.value
-        self.crop.save()
-        super().save(*args, **kwargs)
-
 
 class YieldPredictionObservation(BaseParcelAreaObservation):
     ACTIVITY_NAME = settings.DEFAULT_CALENDAR_ACTIVITY_TYPES['yield_prediction']['name']
