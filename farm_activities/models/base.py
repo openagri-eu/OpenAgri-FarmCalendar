@@ -69,7 +69,7 @@ class FarmCalendarActivity(models.Model):
 
     activity_type = models.ForeignKey(FarmCalendarActivityType, on_delete=models.CASCADE)
     title = models.CharField(max_length=200, blank=True)
-    start_datetime = models.DateTimeField(default=datetime.datetime.now)
+    start_datetime = models.DateTimeField(default=datetime.date.today)
     end_datetime = models.DateTimeField(blank=True, null=True)
 
     details = models.TextField(blank=True, null=True)
