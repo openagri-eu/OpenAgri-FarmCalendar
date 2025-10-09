@@ -119,7 +119,7 @@ DISABLE_REPORTING = config('DISABLE_REPORTING', default=False, cast=bool)
 if not DISABLE_REPORTING :
     REPORTING_ENDPOINTS = {
         'irrigation': f'{REPORTING_API_ROOT}openagri-report/irrigation-report/',
-        'compost': f'{REPORTING_API_ROOT}openagri-report/compost-report/',
+        'composting': f'{REPORTING_API_ROOT}openagri-report/compost-report/',
         'livestock': f'{REPORTING_API_ROOT}openagri-report/animal-report/',
         'report_result_base': f'{REPORTING_API_ROOT}openagri-report/',
     }
