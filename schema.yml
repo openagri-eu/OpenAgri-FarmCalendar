@@ -23,9 +23,24 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -464,6 +479,258 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/v1/Alerts/:
+    get:
+      operationId: api_v1_Alerts_list
+      description: API endpoint that allows Alert to be viewed or edited.
+      parameters:
+      - in: query
+        name: activity_type
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: severity
+        schema:
+          type: string
+          enum:
+          - critical
+          - major
+          - minor
+          - moderate
+          - severe
+        description: |-
+          * `minor` - Minor
+          * `moderate` - Moderate
+          * `severe` - Severe
+          * `major` - Major
+          * `critical` - Critical
+      - in: query
+        name: title
+        schema:
+          type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Alert'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Alert'
+          description: ''
+    post:
+      operationId: api_v1_Alerts_create
+      description: API endpoint that allows Alert to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Alert'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Alert'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Alert'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+          description: ''
+  /api/v1/Alerts/{id}/:
+    get:
+      operationId: api_v1_Alerts_retrieve
+      description: API endpoint that allows Alert to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Alert.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+          description: ''
+    put:
+      operationId: api_v1_Alerts_update
+      description: API endpoint that allows Alert to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Alert.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Alert'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Alert'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Alert'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+          description: ''
+    patch:
+      operationId: api_v1_Alerts_partial_update
+      description: API endpoint that allows Alert to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Alert.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAlert'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAlert'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAlert'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alert'
+          description: ''
+    delete:
+      operationId: api_v1_Alerts_destroy
+      description: API endpoint that allows Alert to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Alert.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/CompostOperations/:
     get:
       operationId: api_v1_CompostOperations_list
@@ -486,9 +753,24 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -568,9 +850,24 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -825,9 +1122,24 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -1081,6 +1393,16 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -1088,6 +1410,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -1336,13 +1663,24 @@ paths:
           - json
           - jsonld
       - in: query
-        name: responsible_agent
+        name: fromDate
         schema:
           type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
       - in: query
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -1732,9 +2070,24 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -1959,6 +2312,16 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -1966,6 +2329,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -2190,6 +2558,16 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -2197,6 +2575,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -2420,6 +2803,16 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -2427,6 +2820,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -2619,6 +3017,242 @@ paths:
           type: string
           format: uuid
         description: A UUID string identifying this Crop Stress Indicator Observation.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/DiseaseDetection/:
+    get:
+      operationId: api_v1_DiseaseDetection_list
+      description: API endpoint that allows DiseaseDetection to be viewed or edited.
+      parameters:
+      - in: query
+        name: activity_type
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: title
+        schema:
+          type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiseaseDetectionObservation'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DiseaseDetectionObservation'
+          description: ''
+    post:
+      operationId: api_v1_DiseaseDetection_create
+      description: API endpoint that allows DiseaseDetection to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiseaseDetectionObservation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DiseaseDetectionObservation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DiseaseDetectionObservation'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/DiseaseDetectionObservation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiseaseDetectionObservation'
+          description: ''
+  /api/v1/DiseaseDetection/{id}/:
+    get:
+      operationId: api_v1_DiseaseDetection_retrieve
+      description: API endpoint that allows DiseaseDetection to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Disease Detection Observation.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/DiseaseDetectionObservation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiseaseDetectionObservation'
+          description: ''
+    put:
+      operationId: api_v1_DiseaseDetection_update
+      description: API endpoint that allows DiseaseDetection to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Disease Detection Observation.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiseaseDetectionObservation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DiseaseDetectionObservation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DiseaseDetectionObservation'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/DiseaseDetectionObservation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiseaseDetectionObservation'
+          description: ''
+    patch:
+      operationId: api_v1_DiseaseDetection_partial_update
+      description: API endpoint that allows DiseaseDetection to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Disease Detection Observation.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDiseaseDetectionObservation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDiseaseDetectionObservation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDiseaseDetectionObservation'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/DiseaseDetectionObservation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiseaseDetectionObservation'
+          description: ''
+    delete:
+      operationId: api_v1_DiseaseDetection_destroy
+      description: API endpoint that allows DiseaseDetection to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Disease Detection Observation.
         required: true
       tags:
       - api
@@ -3110,6 +3744,16 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -3117,6 +3761,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -3323,6 +3972,18 @@ paths:
       description: API endpoint that allows FarmCalendarActivityType to be viewed
         or edited.
       parameters:
+      - in: query
+        name: category
+        schema:
+          type: string
+          enum:
+          - activity
+          - alert
+          - observation
+        description: |-
+          * `activity` - Activity
+          * `observation` - Observation
+          * `alert` - Alert
       - in: query
         name: format
         schema:
@@ -3790,6 +4451,11 @@ paths:
       description: API endpoint that allows FarmParcel to be viewed or edited.
       parameters:
       - in: query
+        name: contains_point
+        schema:
+          type: string
+        description: 'Filter parcels containing this point. Format (EPSG:4326): ''latitude,longitude'''
+      - in: query
         name: farm
         schema:
           type: string
@@ -4044,6 +4710,16 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -4051,6 +4727,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -4735,6 +5416,16 @@ paths:
           - json
           - jsonld
       - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
         name: responsible_agent
         schema:
           type: string
@@ -4742,6 +5433,11 @@ paths:
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -4960,13 +5656,24 @@ paths:
           - json
           - jsonld
       - in: query
-        name: responsible_agent
+        name: fromDate
         schema:
           type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
       - in: query
         name: title
         schema:
           type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
       tags:
       - api
       security:
@@ -5395,6 +6102,720 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/v1/SprayingRecommendation/:
+    get:
+      operationId: api_v1_SprayingRecommendation_list
+      description: API endpoint that allows SprayingRecommendation to be viewed or
+        edited.
+      parameters:
+      - in: query
+        name: activity_type
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: title
+        schema:
+          type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SprayingRecommendationObservation'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SprayingRecommendationObservation'
+          description: ''
+    post:
+      operationId: api_v1_SprayingRecommendation_create
+      description: API endpoint that allows SprayingRecommendation to be viewed or
+        edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SprayingRecommendationObservation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SprayingRecommendationObservation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SprayingRecommendationObservation'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/SprayingRecommendationObservation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SprayingRecommendationObservation'
+          description: ''
+  /api/v1/SprayingRecommendation/{id}/:
+    get:
+      operationId: api_v1_SprayingRecommendation_retrieve
+      description: API endpoint that allows SprayingRecommendation to be viewed or
+        edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Spraying Recommendation Observation.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/SprayingRecommendationObservation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SprayingRecommendationObservation'
+          description: ''
+    put:
+      operationId: api_v1_SprayingRecommendation_update
+      description: API endpoint that allows SprayingRecommendation to be viewed or
+        edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Spraying Recommendation Observation.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SprayingRecommendationObservation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SprayingRecommendationObservation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SprayingRecommendationObservation'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/SprayingRecommendationObservation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SprayingRecommendationObservation'
+          description: ''
+    patch:
+      operationId: api_v1_SprayingRecommendation_partial_update
+      description: API endpoint that allows SprayingRecommendation to be viewed or
+        edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Spraying Recommendation Observation.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSprayingRecommendationObservation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSprayingRecommendationObservation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSprayingRecommendationObservation'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/SprayingRecommendationObservation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SprayingRecommendationObservation'
+          description: ''
+    delete:
+      operationId: api_v1_SprayingRecommendation_destroy
+      description: API endpoint that allows SprayingRecommendation to be viewed or
+        edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Spraying Recommendation Observation.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/VigorEstimation/:
+    get:
+      operationId: api_v1_VigorEstimation_list
+      description: API endpoint that allows VigorEstimation to be viewed or edited.
+      parameters:
+      - in: query
+        name: activity_type
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: title
+        schema:
+          type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VigorEstimationObservation'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VigorEstimationObservation'
+          description: ''
+    post:
+      operationId: api_v1_VigorEstimation_create
+      description: API endpoint that allows VigorEstimation to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VigorEstimationObservation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VigorEstimationObservation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VigorEstimationObservation'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/VigorEstimationObservation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VigorEstimationObservation'
+          description: ''
+  /api/v1/VigorEstimation/{id}/:
+    get:
+      operationId: api_v1_VigorEstimation_retrieve
+      description: API endpoint that allows VigorEstimation to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Vigor Estimation Observation.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/VigorEstimationObservation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VigorEstimationObservation'
+          description: ''
+    put:
+      operationId: api_v1_VigorEstimation_update
+      description: API endpoint that allows VigorEstimation to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Vigor Estimation Observation.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VigorEstimationObservation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VigorEstimationObservation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VigorEstimationObservation'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/VigorEstimationObservation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VigorEstimationObservation'
+          description: ''
+    patch:
+      operationId: api_v1_VigorEstimation_partial_update
+      description: API endpoint that allows VigorEstimation to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Vigor Estimation Observation.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedVigorEstimationObservation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedVigorEstimationObservation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedVigorEstimationObservation'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/VigorEstimationObservation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VigorEstimationObservation'
+          description: ''
+    delete:
+      operationId: api_v1_VigorEstimation_destroy
+      description: API endpoint that allows VigorEstimation to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Vigor Estimation Observation.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/YieldPrediction/:
+    get:
+      operationId: api_v1_YieldPrediction_list
+      description: API endpoint that allows YieldPrediction to be viewed or edited.
+      parameters:
+      - in: query
+        name: activity_type
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: query
+        name: fromDate
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: parcel
+        schema:
+          type: string
+          format: uuid
+      - in: query
+        name: title
+        schema:
+          type: string
+      - in: query
+        name: toDate
+        schema:
+          type: string
+          format: date-time
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/YieldPredictionObservation'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/YieldPredictionObservation'
+          description: ''
+    post:
+      operationId: api_v1_YieldPrediction_create
+      description: API endpoint that allows YieldPrediction to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/YieldPredictionObservation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/YieldPredictionObservation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/YieldPredictionObservation'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/YieldPredictionObservation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/YieldPredictionObservation'
+          description: ''
+  /api/v1/YieldPrediction/{id}/:
+    get:
+      operationId: api_v1_YieldPrediction_retrieve
+      description: API endpoint that allows YieldPrediction to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Yield Prediction Observation.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/YieldPredictionObservation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/YieldPredictionObservation'
+          description: ''
+    put:
+      operationId: api_v1_YieldPrediction_update
+      description: API endpoint that allows YieldPrediction to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Yield Prediction Observation.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/YieldPredictionObservation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/YieldPredictionObservation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/YieldPredictionObservation'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/YieldPredictionObservation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/YieldPredictionObservation'
+          description: ''
+    patch:
+      operationId: api_v1_YieldPrediction_partial_update
+      description: API endpoint that allows YieldPrediction to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Yield Prediction Observation.
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedYieldPredictionObservation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedYieldPredictionObservation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedYieldPredictionObservation'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/YieldPredictionObservation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/YieldPredictionObservation'
+          description: ''
+    delete:
+      operationId: api_v1_YieldPrediction_destroy
+      description: API endpoint that allows YieldPrediction to be viewed or edited.
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this Yield Prediction Observation.
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
   /api/v1/schema/:
     get:
       operationId: api_v1_schema_retrieve
@@ -5580,6 +7001,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        operatedOn:
+          type: string
+          format: uuid
         responsibleAgent:
           type: string
           nullable: true
@@ -5597,6 +7021,7 @@ components:
       - hasCompostMaterial
       - hasStartDatetime
       - id
+      - operatedOn
       - usesAgriculturalMachinery
     AddressField:
       type: object
@@ -5676,6 +7101,52 @@ components:
       - name
       - purchase_date
       - seria_number
+    Alert:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        activityType:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 200
+        details:
+          type: string
+          nullable: true
+        severity:
+          $ref: '#/components/schemas/SeverityEnum'
+        hasAgriParcel:
+          type: string
+          format: uuid
+        validFrom:
+          type: string
+          format: date-time
+        validTo:
+          type: string
+          format: date-time
+        dateIssued:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        quantityValue:
+          $ref: '#/components/schemas/ObservationQuantityValueField'
+        relatedObservation:
+          type: string
+          format: uuid
+          nullable: true
+      required:
+      - activityType
+      - dateIssued
+      - hasAgriParcel
+      - id
+      - relatedObservation
+      - validFrom
+      - validTo
     AppliedAmmountField:
       type: object
       properties:
@@ -5688,6 +7159,16 @@ components:
       required:
       - numericValue
       - unit
+    CategoryEnum:
+      enum:
+      - activity
+      - observation
+      - alert
+      type: string
+      description: |-
+        * `activity` - Activity
+        * `observation` - Observation
+        * `alert` - Alert
     CompostOperation:
       type: object
       properties:
@@ -5719,6 +7200,9 @@ components:
           items:
             type: string
             format: uuid
+        hasAgriParcel:
+          type: string
+          format: uuid
         isOperatedOn:
           type: string
         hasNestedOperation:
@@ -5735,6 +7219,7 @@ components:
           readOnly: true
       required:
       - activityType
+      - hasAgriParcel
       - hasMeasurement
       - hasNestedOperation
       - hasStartDatetime
@@ -5764,6 +7249,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        operatedOn:
+          type: string
+          format: uuid
         responsibleAgent:
           type: string
           nullable: true
@@ -5776,6 +7264,7 @@ components:
       - activityType
       - hasStartDatetime
       - id
+      - operatedOn
       - usesAgriculturalMachinery
     ContactPersonField:
       type: object
@@ -5814,6 +7303,9 @@ components:
           allOf:
           - $ref: '#/components/schemas/MadeBySensorField'
           nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
         hasAgriCrop:
           type: string
           format: uuid
@@ -5824,6 +7316,7 @@ components:
       required:
       - activityType
       - hasAgriCrop
+      - hasAgriParcel
       - hasResult
       - id
       - observedProperty
@@ -5913,6 +7406,9 @@ components:
           allOf:
           - $ref: '#/components/schemas/MadeBySensorField'
           nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
         hasAgriCrop:
           type: string
           format: uuid
@@ -5923,6 +7419,53 @@ components:
       required:
       - activityType
       - hasAgriCrop
+      - hasAgriParcel
+      - hasResult
+      - id
+      - observedProperty
+      - phenomenonTime
+    DiseaseDetectionObservation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        activityType:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 200
+        details:
+          type: string
+          nullable: true
+        phenomenonTime:
+          type: string
+          format: date-time
+        hasEndDatetime:
+          type: string
+          format: date-time
+          nullable: true
+        madeBySensor:
+          allOf:
+          - $ref: '#/components/schemas/MadeBySensorField'
+          nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
+        hasArea:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        hasResult:
+          $ref: '#/components/schemas/GenericQuantityValueField'
+        observedProperty:
+          type: string
+      required:
+      - activityType
+      - hasAgriParcel
+      - hasArea
       - hasResult
       - id
       - observedProperty
@@ -6074,6 +7617,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
         responsibleAgent:
           type: string
           nullable: true
@@ -6084,6 +7630,7 @@ components:
             format: uuid
       required:
       - activityType
+      - hasAgriParcel
       - hasStartDatetime
       - id
       - usesAgriculturalMachinery
@@ -6100,6 +7647,8 @@ components:
         description:
           type: string
           nullable: true
+        category:
+          $ref: '#/components/schemas/CategoryEnum'
         background_color:
           type: string
           pattern: ^#[0-9A-Fa-f]{6}$
@@ -6465,7 +8014,6 @@ components:
         operatedOn:
           type: string
           format: uuid
-          nullable: true
       required:
       - activityType
       - hasAppliedAmount
@@ -6519,6 +8067,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
         madeBySensor:
           allOf:
           - $ref: '#/components/schemas/MadeBySensorField'
@@ -6529,10 +8080,25 @@ components:
           type: string
       required:
       - activityType
+      - hasAgriParcel
       - hasResult
       - id
       - observedProperty
       - phenomenonTime
+    ObservationQuantityValueField:
+      type: object
+      properties:
+        unit:
+          type: string
+          readOnly: true
+          nullable: true
+        hasValue:
+          type: string
+          readOnly: true
+          nullable: true
+      required:
+      - hasValue
+      - unit
     PatchedAddRawMaterialOperation:
       type: object
       properties:
@@ -6556,6 +8122,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        operatedOn:
+          type: string
+          format: uuid
         responsibleAgent:
           type: string
           nullable: true
@@ -6613,6 +8182,44 @@ components:
           type: string
           format: date-time
           readOnly: true
+    PatchedAlert:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        activityType:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 200
+        details:
+          type: string
+          nullable: true
+        severity:
+          $ref: '#/components/schemas/SeverityEnum'
+        hasAgriParcel:
+          type: string
+          format: uuid
+        validFrom:
+          type: string
+          format: date-time
+        validTo:
+          type: string
+          format: date-time
+        dateIssued:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        quantityValue:
+          $ref: '#/components/schemas/ObservationQuantityValueField'
+        relatedObservation:
+          type: string
+          format: uuid
+          nullable: true
     PatchedCompostOperation:
       type: object
       properties:
@@ -6644,6 +8251,9 @@ components:
           items:
             type: string
             format: uuid
+        hasAgriParcel:
+          type: string
+          format: uuid
         isOperatedOn:
           type: string
         hasNestedOperation:
@@ -6681,6 +8291,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        operatedOn:
+          type: string
+          format: uuid
         responsibleAgent:
           type: string
           nullable: true
@@ -6716,6 +8329,9 @@ components:
           allOf:
           - $ref: '#/components/schemas/MadeBySensorField'
           nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
         hasAgriCrop:
           type: string
           format: uuid
@@ -6790,9 +8406,50 @@ components:
           allOf:
           - $ref: '#/components/schemas/MadeBySensorField'
           nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
         hasAgriCrop:
           type: string
           format: uuid
+        hasResult:
+          $ref: '#/components/schemas/GenericQuantityValueField'
+        observedProperty:
+          type: string
+    PatchedDiseaseDetectionObservation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        activityType:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 200
+        details:
+          type: string
+          nullable: true
+        phenomenonTime:
+          type: string
+          format: date-time
+        hasEndDatetime:
+          type: string
+          format: date-time
+          nullable: true
+        madeBySensor:
+          allOf:
+          - $ref: '#/components/schemas/MadeBySensorField'
+          nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
+        hasArea:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
         hasResult:
           $ref: '#/components/schemas/GenericQuantityValueField'
         observedProperty:
@@ -6919,6 +8576,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
         responsibleAgent:
           type: string
           nullable: true
@@ -6940,6 +8600,8 @@ components:
         description:
           type: string
           nullable: true
+        category:
+          $ref: '#/components/schemas/CategoryEnum'
         background_color:
           type: string
           pattern: ^#[0-9A-Fa-f]{6}$
@@ -7229,7 +8891,6 @@ components:
         operatedOn:
           type: string
           format: uuid
-          nullable: true
     PatchedObservation:
       type: object
       properties:
@@ -7253,6 +8914,9 @@ components:
           type: string
           format: date-time
           nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
         madeBySensor:
           allOf:
           - $ref: '#/components/schemas/MadeBySensorField'
@@ -7302,6 +8966,124 @@ components:
           type: string
           format: date-time
           readOnly: true
+    PatchedSprayingRecommendationObservation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        activityType:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 200
+        details:
+          type: string
+          nullable: true
+        phenomenonTime:
+          type: string
+          format: date-time
+        hasEndDatetime:
+          type: string
+          format: date-time
+          nullable: true
+        madeBySensor:
+          allOf:
+          - $ref: '#/components/schemas/MadeBySensorField'
+          nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
+        hasArea:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        hasResult:
+          $ref: '#/components/schemas/GenericQuantityValueField'
+        observedProperty:
+          type: string
+        usesPesticide:
+          type: string
+          format: uuid
+          nullable: true
+    PatchedVigorEstimationObservation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        activityType:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 200
+        details:
+          type: string
+          nullable: true
+        phenomenonTime:
+          type: string
+          format: date-time
+        hasEndDatetime:
+          type: string
+          format: date-time
+          nullable: true
+        madeBySensor:
+          allOf:
+          - $ref: '#/components/schemas/MadeBySensorField'
+          nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
+        hasArea:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        hasResult:
+          $ref: '#/components/schemas/GenericQuantityValueField'
+        observedProperty:
+          type: string
+    PatchedYieldPredictionObservation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        activityType:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 200
+        details:
+          type: string
+          nullable: true
+        phenomenonTime:
+          type: string
+          format: date-time
+        hasEndDatetime:
+          type: string
+          format: date-time
+          nullable: true
+        madeBySensor:
+          allOf:
+          - $ref: '#/components/schemas/MadeBySensorField'
+          nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
+        hasArea:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        hasResult:
+          $ref: '#/components/schemas/GenericQuantityValueField'
+        observedProperty:
+          type: string
     Pesticide:
       type: object
       properties:
@@ -7354,6 +9136,20 @@ components:
       - invalidatedAtTime
       - isPricePer
       - isTargetedTowards
+    SeverityEnum:
+      enum:
+      - minor
+      - moderate
+      - severe
+      - major
+      - critical
+      type: string
+      description: |-
+        * `minor` - Minor
+        * `moderate` - Moderate
+        * `severe` - Severe
+        * `major` - Major
+        * `critical` - Critical
     SexEnum:
       enum:
       - 0
@@ -7364,6 +9160,57 @@ components:
         * `0` - N/A
         * `1` - Female
         * `2` - Male
+    SprayingRecommendationObservation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        activityType:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 200
+        details:
+          type: string
+          nullable: true
+        phenomenonTime:
+          type: string
+          format: date-time
+        hasEndDatetime:
+          type: string
+          format: date-time
+          nullable: true
+        madeBySensor:
+          allOf:
+          - $ref: '#/components/schemas/MadeBySensorField'
+          nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
+        hasArea:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        hasResult:
+          $ref: '#/components/schemas/GenericQuantityValueField'
+        observedProperty:
+          type: string
+        usesPesticide:
+          type: string
+          format: uuid
+          nullable: true
+      required:
+      - activityType
+      - hasAgriParcel
+      - hasArea
+      - hasResult
+      - id
+      - observedProperty
+      - phenomenonTime
+      - usesPesticide
     StatusEnum:
       enum:
       - 0
@@ -7388,6 +9235,98 @@ components:
         * `centre_pivot` - Centre Pivot
         * `furrow` - Furrow
         * `terraced` - Terraced
+    VigorEstimationObservation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        activityType:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 200
+        details:
+          type: string
+          nullable: true
+        phenomenonTime:
+          type: string
+          format: date-time
+        hasEndDatetime:
+          type: string
+          format: date-time
+          nullable: true
+        madeBySensor:
+          allOf:
+          - $ref: '#/components/schemas/MadeBySensorField'
+          nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
+        hasArea:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        hasResult:
+          $ref: '#/components/schemas/GenericQuantityValueField'
+        observedProperty:
+          type: string
+      required:
+      - activityType
+      - hasAgriParcel
+      - hasArea
+      - hasResult
+      - id
+      - observedProperty
+      - phenomenonTime
+    YieldPredictionObservation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        activityType:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 200
+        details:
+          type: string
+          nullable: true
+        phenomenonTime:
+          type: string
+          format: date-time
+        hasEndDatetime:
+          type: string
+          format: date-time
+          nullable: true
+        madeBySensor:
+          allOf:
+          - $ref: '#/components/schemas/MadeBySensorField'
+          nullable: true
+        hasAgriParcel:
+          type: string
+          format: uuid
+        hasArea:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,13}(?:\.\d{0,2})?$
+        hasResult:
+          $ref: '#/components/schemas/GenericQuantityValueField'
+        observedProperty:
+          type: string
+      required:
+      - activityType
+      - hasAgriParcel
+      - hasArea
+      - hasResult
+      - id
+      - observedProperty
+      - phenomenonTime
   securitySchemes:
     cookieAuth:
       type: apiKey

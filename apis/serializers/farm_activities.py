@@ -16,11 +16,16 @@ from farm_management.models import (
 from farm_activities.models import (
     FarmCalendarActivityType,
     FarmCalendarActivity,
+    Alert,
     FertilizationOperation,
     IrrigationOperation,
     CropProtectionOperation,Observation,
     CropStressIndicatorObservation,
     CropGrowthStageObservation,
+    YieldPredictionObservation,
+    DiseaseDetectionObservation,
+    VigorEstimationObservation,
+    SprayingRecommendationObservation,
     CompostOperation,
     AddRawMaterialOperation,
     AddRawMaterialCompostQuantity,
@@ -55,6 +60,36 @@ def quantity_value_serializer_factory(unit_field, value_field):
     return GenericQuantityValueFieldSerializer
 
 
+def observation_ref_quantity_value_serializer_factory(unit_field, value_field):
+
+    class ObservationQuantityValueFieldSerializer(serializers.Serializer):
+        unit = serializers.CharField(allow_null=True, read_only=True, required=False)
+        hasValue = serializers.CharField(allow_null=True, read_only=True, required=False)
+
+
+        def to_representation(self, instance):
+            instanced_observation = None
+            try:
+                instanced_observation = instance.observation
+            except Observation.DoesNotExist:
+                return {}
+
+            value = getattr(instanced_observation, value_field)
+            unit = getattr(instanced_observation, unit_field)
+            uuid_orig_str = "".join([
+                str(getattr(instanced_observation, unit_field, '')),
+                str(getattr(instanced_observation, value_field, ''),)
+            ])
+            hash_uuid = str(uuid.uuid5(uuid.NAMESPACE_DNS, uuid_orig_str))
+            return {
+                '@id': generate_urn('QuantityValue',obj_id=hash_uuid),
+                '@type': 'QuantityValue',
+                'unit': unit,
+                'hasValue': value,
+            }
+    return ObservationQuantityValueFieldSerializer
+
+
 class FarmCalendarActivitySerializer(serializers.ModelSerializer):
     activityType = URNRelatedField(class_names=['FarmCalendarActivityType'], source='activity_type', queryset=FarmCalendarActivityType.objects.all())
     hasStartDatetime = serializers.DateTimeField(source='start_datetime')
@@ -64,12 +99,19 @@ class FarmCalendarActivitySerializer(serializers.ModelSerializer):
 
     usesAgriculturalMachinery = URNRelatedField(class_names=['AgriculturalMachine'], source='agricultural_machinery', many=True, queryset=AgriculturalMachine.objects.all())
 
+    hasAgriParcel = URNRelatedField(
+        source='parcel',
+        class_names=['Parcel'],
+        queryset=FarmParcel.objects.all(),
+    )
+
     class Meta:
         model = FarmCalendarActivity
         fields = [
             'id',
             'activityType', 'title', 'details',
             'hasStartDatetime', 'hasEndDatetime',
+            'hasAgriParcel',
             'responsibleAgent', 'usesAgriculturalMachinery'
         ]
 
@@ -77,7 +119,7 @@ class FarmCalendarActivitySerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
 
         json_ld_representation = {
-            '@type': 'Operation',
+            '@type': 'FarmCalendarActivity',
             '@id': generate_urn(instance.__class__.__name__, obj_id=representation.pop('id')),
             **representation
         }
@@ -91,7 +133,7 @@ class FarmCalendarActivityTypeSerializer(serializers.ModelSerializer):
 
         fields = [
             'id',
-            'name', 'description',
+            'name', 'description', 'category',
             'background_color', 'border_color', 'text_color',
         ]
 
@@ -131,7 +173,7 @@ class GenericOperationSerializer(FarmCalendarActivitySerializer):
     operatedOn = URNRelatedField(
         class_names=['Parcel'],
         queryset=FarmParcel.objects.all(),
-        source='operated_on'
+        source='parcel'
     )
 
 class FertilizationOperationSerializer(GenericOperationSerializer):
@@ -167,12 +209,6 @@ class IrrigationOperationSerializer(GenericOperationSerializer):
         choices=IrrigationOperation.IrrigationSystemChoices.choices,
         source='irrigation_system'
     )
-    operatedOn = URNRelatedField(
-        class_names=['Parcel'],
-        queryset=FarmParcel.objects.all(),
-        source='operated_on',
-        allow_null=True
-    )
 
     class Meta:
         model = IrrigationOperation
@@ -197,7 +233,7 @@ class IrrigationOperationSerializer(GenericOperationSerializer):
 
     def create(self, validated_data):
         if self.context['view'].kwargs.get('compost_operation_pk'):
-            validated_data['parent_activity'] = self.context['view'].kwargs.get('compost_operation_pk')
+            validated_data['parent_activity'] = CompostOperation.objects.get(pk=self.context['view'].kwargs.get('compost_operation_pk'))
 
         return super().create(validated_data)
 
@@ -234,7 +270,7 @@ class MadeBySensorFieldSerializer(serializers.Serializer):
 
     def to_representation(self, instance):
         uuid_orig_str = getattr(instance, 'sensor_id', '')
-        if uuid_orig_str is None or uuid_orig_str is '':
+        if uuid_orig_str is None or uuid_orig_str == '':
             return {}
         hash_uuid = str(uuid.uuid5(uuid.NAMESPACE_DNS, uuid_orig_str))
         return {
@@ -257,6 +293,7 @@ class ObservationSerializer(FarmCalendarActivitySerializer):
             'title', 'details',
             'phenomenonTime',
             'hasEndDatetime',
+            'hasAgriParcel',
             'madeBySensor',
             # 'responsibleAgent', 'usesAgriculturalMachinery',
             'hasResult',
@@ -279,6 +316,40 @@ class ObservationSerializer(FarmCalendarActivitySerializer):
         return super().create(validated_data)
 
 
+class AlertSerializer(FarmCalendarActivitySerializer):
+    validFrom = serializers.DateTimeField(source='start_datetime')
+    validTo = serializers.DateTimeField(source='end_datetime')
+    dateIssued = serializers.DateTimeField(source='parent_activity.start_datetime', allow_null=True, read_only=True, required=False)
+    relatedObservation = URNRelatedField(
+        class_names=['Observation'],
+        queryset=Observation.objects.all(),
+        source='parent_activity',
+        allow_null=True
+    )
+    quantityValue = observation_ref_quantity_value_serializer_factory('value_unit', 'value')(source='parent_activity', required=False)
+
+    class Meta:
+        model = Alert
+        fields = [
+            'id',
+            'activityType',
+            'title', 'details',
+            'severity',
+            'hasAgriParcel',
+            'validFrom',
+            'validTo',
+            'dateIssued',
+            'quantityValue',
+            'relatedObservation',
+        ]
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation.update({'@type': 'Alert'})
+        json_ld_representation = representation
+        return json_ld_representation
+
+
 class CropStressIndicatorObservationSerializer(ObservationSerializer):
     hasAgriCrop = URNRelatedField(
         class_names=['FarmCrop'],
@@ -293,6 +364,7 @@ class CropStressIndicatorObservationSerializer(ObservationSerializer):
             'phenomenonTime',
             'hasEndDatetime',
             'madeBySensor',
+            'hasAgriParcel',
             # 'responsibleAgent', 'usesAgriculturalMachinery',
             'hasAgriCrop',
             'hasResult',
@@ -305,6 +377,7 @@ class CropStressIndicatorObservationSerializer(ObservationSerializer):
         json_ld_representation = representation
 
         return json_ld_representation
+
 
 class CropGrowthStageObservationSerializer(ObservationSerializer):
     hasAgriCrop = URNRelatedField(
@@ -321,6 +394,7 @@ class CropGrowthStageObservationSerializer(ObservationSerializer):
             'hasEndDatetime',
             'madeBySensor',
             # 'responsibleAgent', 'usesAgriculturalMachinery',
+            'hasAgriParcel',
             'hasAgriCrop',
             'hasResult',
             'observedProperty',
@@ -333,6 +407,78 @@ class CropGrowthStageObservationSerializer(ObservationSerializer):
 
         return json_ld_representation
 
+
+
+class BaseParcelAreaObservationSerializer(ObservationSerializer):
+    hasArea = serializers.DecimalField(source='area', max_digits=15, decimal_places=2)
+
+    class Meta:
+        fields = [
+            'id',
+            'activityType', 'title', 'details',
+            'phenomenonTime',
+            'hasEndDatetime',
+            'madeBySensor',
+            'hasAgriParcel',
+            'hasArea',
+            'hasResult',
+            'observedProperty',
+        ]
+
+
+class YieldPredictionObservationSerializer(BaseParcelAreaObservationSerializer):
+    class Meta(BaseParcelAreaObservationSerializer.Meta):
+        model = YieldPredictionObservation
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation.update({'@type': 'YieldPrediction'})
+        json_ld_representation = representation
+
+        return json_ld_representation
+
+
+class DiseaseDetectionObservationSerializer(BaseParcelAreaObservationSerializer):
+    class Meta(BaseParcelAreaObservationSerializer.Meta):
+        model = DiseaseDetectionObservation
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation.update({'@type': 'DiseaseDetection'})
+        json_ld_representation = representation
+
+        return json_ld_representation
+
+
+class VigorEstimationObservationSerializer(BaseParcelAreaObservationSerializer):
+    class Meta(BaseParcelAreaObservationSerializer.Meta):
+        model = VigorEstimationObservation
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation.update({'@type': 'VigorEstimation'})
+        json_ld_representation = representation
+
+        return json_ld_representation
+
+
+class SprayingRecommendationObservationSerializer(BaseParcelAreaObservationSerializer):
+    usesPesticide = URNRelatedField(
+        class_names=['Pesticide'],
+        queryset=Pesticide.objects.all(),
+        source='pesticide',
+        allow_null=True
+    )
+    class Meta(BaseParcelAreaObservationSerializer.Meta):
+        model = SprayingRecommendationObservation
+        fields = BaseParcelAreaObservationSerializer.Meta.fields + ['usesPesticide']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation.update({'@type': 'SprayingRecommendation'})
+        json_ld_representation = representation
+
+        return json_ld_representation
 
 
 class AddRawMaterialCompostQuantitySerializer(serializers.ModelSerializer):
@@ -367,6 +513,7 @@ class AddRawMaterialOperationSerializer(GenericOperationSerializer):
             'id',
             'activityType', 'title', 'details',
             'hasStartDatetime', 'hasEndDatetime',
+            'operatedOn',
             'responsibleAgent', 'usesAgriculturalMachinery',
             'hasCompostMaterial'
         ]
@@ -382,7 +529,7 @@ class AddRawMaterialOperationSerializer(GenericOperationSerializer):
 
     def create(self, validated_data):
         if self.context['view'].kwargs.get('compost_operation_pk'):
-            validated_data['parent_activity'] = self.context['view'].kwargs.get('compost_operation_pk')
+            validated_data['parent_activity'] = CompostOperation.objects.get(pk=self.context['view'].kwargs.get('compost_operation_pk'))
 
         compost_data = validated_data.pop('addrawmaterialcompostquantity_set', [])
         operation = super().create(validated_data)
@@ -415,6 +562,7 @@ class CompostTurningOperationSerializer(GenericOperationSerializer):
             'id',
             'activityType', 'title', 'details',
             'hasStartDatetime', 'hasEndDatetime',
+            'operatedOn',
             'responsibleAgent', 'usesAgriculturalMachinery',
         ]
 
@@ -427,7 +575,7 @@ class CompostTurningOperationSerializer(GenericOperationSerializer):
 
     def create(self, validated_data):
         if self.context['view'].kwargs.get('compost_operation_pk'):
-            validated_data['parent_activity'] = self.context['view'].kwargs.get('compost_operation_pk')
+            validated_data['parent_activity'] = CompostOperation.objects.get(pk=self.context['view'].kwargs.get('compost_operation_pk'))
 
         return super().create(validated_data)
 
@@ -473,6 +621,7 @@ class CompostOperationSerializer(FarmCalendarActivitySerializer):
             'activityType', 'title', 'details',
             'hasStartDatetime', 'hasEndDatetime',
             'responsibleAgent', 'usesAgriculturalMachinery',
+            'hasAgriParcel',
             'isOperatedOn',
             'hasNestedOperation', 'hasMeasurement'
         ]

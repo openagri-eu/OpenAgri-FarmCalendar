@@ -8,6 +8,8 @@ from ..serializers import (
     FarmParcelSerializer,
 )
 
+from ..filters import FarmParcelFilter
+
 
 class FarmViewSet(viewsets.ModelViewSet):
     """
@@ -26,7 +28,7 @@ class FarmParcelViewSet(viewsets.ModelViewSet):
     queryset = FarmParcel.objects.all().prefetch_related('farmcrops').order_by('-created_at')
     serializer_class = FarmParcelSerializer
     permission_classes = [permissions.IsAuthenticated]
-    filterset_fields = ['identifier', 'farm', 'parcel_type', 'geo_id', 'status']
 
+    filterset_class = FarmParcelFilter
 
 

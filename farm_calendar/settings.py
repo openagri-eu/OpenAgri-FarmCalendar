@@ -114,15 +114,15 @@ if AGSTACK_ASSET_REGISTY_API_URL is not None:
 
 
 
-
-# REPORTING_API_ROOT = config('REPORTING_API_ROOT', default='http://localhost:8011/api/v1/')
-REPORTING_API_ROOT = config('REPORTING_API_ROOT')
-REPORTING_ENDPOINTS = {
-    'irrigation': f'{REPORTING_API_ROOT}openagri-report/irrigation-report/',
-    'compost': f'{REPORTING_API_ROOT}openagri-report/compost-report/',
-    'livestock': f'{REPORTING_API_ROOT}openagri-report/animal-report/',
-    'report_result_base': f'{REPORTING_API_ROOT}openagri-report/',
-}
+REPORTING_API_ROOT = config('REPORTING_API_ROOT', default='http://localhost:8011/api/v1/')
+DISABLE_REPORTING = config('DISABLE_REPORTING', default=False, cast=bool)
+if not DISABLE_REPORTING :
+    REPORTING_ENDPOINTS = {
+        'irrigation': f'{REPORTING_API_ROOT}openagri-report/irrigation-report/',
+        'composting': f'{REPORTING_API_ROOT}openagri-report/compost-report/',
+        'livestock': f'{REPORTING_API_ROOT}openagri-report/animal-report/',
+        'report_result_base': f'{REPORTING_API_ROOT}openagri-report/',
+    }
 
 
 AUTHENTICATION_BACKENDS = (
@@ -344,6 +344,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         "background_color": "#F5E8C7",
         "border_color": "#8B4513",
         "text_color": "#2F4F4F",
+        'category': 'activity',
         "id": "00000000-0000-0000-0000-000000000001",
     },
     'irrigation': {
@@ -352,6 +353,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'background_color': '#B3E5FC',
         'border_color': '#0288D1',
         'text_color': '#01579B',
+        'category': 'activity',
         "id": "00000000-0000-0000-0000-000000000002",
     },
     'crop_protection':{
@@ -360,6 +362,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'background_color': '#C5E1A5',
         'border_color': '#8E7F2F',
         'text_color': '#4E342E',
+        'category': 'activity',
         "id": "00000000-0000-0000-0000-000000000003",
     },
     'crop_stress_indicator':{
@@ -368,6 +371,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'background_color': '#FFCCCB',
         'border_color': '#C62828',
         'text_color': '#BF360C',
+        'category': 'observation',
         "id": "00000000-0000-0000-0000-000000000004",
     },
     'crop_growth_stage':{
@@ -376,6 +380,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         "background_color": "#F5E8C7",
         "border_color": "#8B4513",
         "text_color": "#2F4F4F",
+        'category': 'observation',
         "id": "00000000-0000-0000-0000-000000000005",
     },
     'compost_operation':{
@@ -384,6 +389,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'background_color': '#A3C585',
         'border_color': '#6B4226',
         'text_color': '#3E4A34',
+        'category': 'activity',
         'id': '00000000-0000-0000-0000-000000000006',
     },
     'add_raw_material_operation':{
@@ -392,6 +398,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'background_color': '#D9E58A',
         'border_color': '#8A5A2B',
         'text_color': '#4A5320',
+        'category': 'activity',
         'id': '00000000-0000-0000-0000-000000000007',
     },
     'compost_turning_operation': {
@@ -400,6 +407,43 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'background_color': '#BFD982',
         'border_color': '#72512D',
         'text_color': '#3C4F2E',
+        'category': 'activity',
         'id': '00000000-0000-0000-0000-000000000008',
-    }
+    },
+    'yield_prediction': {
+        'name': 'Yield Prediction Observation',
+        'description': 'Yield Prediction',
+        'background_color': '#E6F3C3',
+        'border_color': '#5A7247',
+        'text_color': '#2A3B1E',
+        'category': 'observation',
+        'id': '00000000-0000-0000-0000-000000000009',
+    },
+    'disease_detection': {
+        'name': 'Disease Detection Observation',
+        'description': 'Disease Detection',
+        'background_color': '#F3C3C3',
+        'border_color': '#72475A',
+        'text_color': '#3B1E2A',
+        'category': 'observation',
+        'id': '00000000-0000-0000-0000-000000000010',
+    },
+    'vigor_estimation': {
+        'name': 'Vigor Estimation Observation',
+        'description': 'Vigor Estimation',
+        'background_color': '#C3E6F3',
+        'border_color': '#475A72',
+        'text_color': '#1E2A3B',
+        'category': 'observation',
+        'id': '00000000-0000-0000-0000-000000000011',
+    },
+    'spraying_recommendation': {
+        'name': 'Spraying Recommendation Observation',
+        'description': 'Spraying Recommendation',
+        'background_color': '#F3E6C3',
+        'border_color': '#725A47',
+        'text_color': '#3B2A1E',
+        'category': 'observation',
+        'id': '00000000-0000-0000-0000-000000000012',
+    },
 }
