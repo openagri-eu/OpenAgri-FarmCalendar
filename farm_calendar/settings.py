@@ -346,6 +346,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         "text_color": "#2F4F4F",
         'category': 'activity',
         "id": "00000000-0000-0000-0000-000000000001",
+        'built_in_class': 'farm_activities.FertilizationOperation',
     },
     'irrigation': {
         'name': 'Irrigation',
@@ -355,6 +356,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'text_color': '#01579B',
         'category': 'activity',
         "id": "00000000-0000-0000-0000-000000000002",
+        'built_in_class': 'farm_activities.IrrigationOperation',
     },
     'crop_protection':{
         'name': 'Pesticides',
@@ -364,6 +366,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'text_color': '#4E342E',
         'category': 'activity',
         "id": "00000000-0000-0000-0000-000000000003",
+        'built_in_class': 'farm_activities.CropProtectionOperation',
     },
     'crop_stress_indicator':{
         'name': 'Crop Stress Indicator',
@@ -373,6 +376,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'text_color': '#BF360C',
         'category': 'observation',
         "id": "00000000-0000-0000-0000-000000000004",
+        'built_in_class': 'farm_activities.CropStressIndicatorObservation',
     },
     'crop_growth_stage':{
         'name': 'Crop Growth Stage Observation',
@@ -382,6 +386,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         "text_color": "#2F4F4F",
         'category': 'observation',
         "id": "00000000-0000-0000-0000-000000000005",
+        'built_in_class': 'farm_activities.CropGrowthStageObservation',
     },
     'compost_operation':{
         'name': 'Compost Operation',
@@ -391,6 +396,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'text_color': '#3E4A34',
         'category': 'activity',
         'id': '00000000-0000-0000-0000-000000000006',
+        'built_in_class': 'farm_activities.CompostOperation',
     },
     'add_raw_material_operation':{
         'name': 'Add Raw Material Operation',
@@ -400,6 +406,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'text_color': '#4A5320',
         'category': 'activity',
         'id': '00000000-0000-0000-0000-000000000007',
+        'built_in_class': 'farm_activities.AddRawMaterialOperation',
     },
     'compost_turning_operation': {
         'name': 'Compost Turning Operation',
@@ -409,6 +416,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'text_color': '#3C4F2E',
         'category': 'activity',
         'id': '00000000-0000-0000-0000-000000000008',
+        'built_in_class': 'farm_activities.CompostTurningOperation',
     },
     'yield_prediction': {
         'name': 'Yield Prediction Observation',
@@ -418,6 +426,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'text_color': '#2A3B1E',
         'category': 'observation',
         'id': '00000000-0000-0000-0000-000000000009',
+        'built_in_class': 'farm_activities.YieldPredictionObservation',
     },
     'disease_detection': {
         'name': 'Disease Detection Observation',
@@ -427,6 +436,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'text_color': '#3B1E2A',
         'category': 'observation',
         'id': '00000000-0000-0000-0000-000000000010',
+        'built_in_class': 'farm_activities.DiseaseDetectionObservation',
     },
     'vigor_estimation': {
         'name': 'Vigor Estimation Observation',
@@ -436,6 +446,7 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'text_color': '#1E2A3B',
         'category': 'observation',
         'id': '00000000-0000-0000-0000-000000000011',
+        'built_in_class': 'farm_activities.VigorEstimationObservation',
     },
     'spraying_recommendation': {
         'name': 'Spraying Recommendation Observation',
@@ -445,5 +456,6 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'text_color': '#3B2A1E',
         'category': 'observation',
         'id': '00000000-0000-0000-0000-000000000012',
+        'built_in_class': 'farm_activities.SprayingRecommendationObservation',
     },
 }
