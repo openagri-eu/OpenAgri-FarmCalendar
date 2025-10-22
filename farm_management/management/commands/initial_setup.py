@@ -32,6 +32,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('Setting up FarmCalendarActivityType data...'))
         for def_operation_type in settings.DEFAULT_CALENDAR_ACTIVITY_TYPES.values():
             pk = def_operation_type['id']
+            def_operation_type.pop('built_in_class', None)
             FarmCalendarActivityType.objects.update_or_create(id=pk, defaults=def_operation_type)
 
     # Check for pending migrations
