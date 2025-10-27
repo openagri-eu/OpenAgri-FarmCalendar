@@ -4,11 +4,9 @@ from pathlib import Path
 
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.messages import constants as messages
-from dotenv import load_dotenv
 
-from .env_helpers import get_env_var
 
-load_dotenv()  # Load environment variables from .env file
+ # Load environment variables from .env file
 from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,7 +18,8 @@ STATIC_ROOT = str(BASE_DIR / "static")
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_env_var('DJANGO_SECRET_KEY')
+SECRET_KEY = config('DJANGO_SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -79,8 +78,8 @@ THIRD_PARTY_APPS = [
 
 INSTALLED_APPS = DEFAULT_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
-GATEKEEPER_LOGIN_URL = os.environ.get('GATEKEEPER_LOGIN_URL', None)
-GATEKEEPER_LOGOUT_API_URL = os.environ.get('GATEKEEPER_LOGOUT_API_URL', None)
+GATEKEEPER_LOGIN_URL = config('GATEKEEPER_LOGIN_URL', default=None)
+GATEKEEPER_LOGOUT_API_URL = config('GATEKEEPER_LOGOUT_API_URL', default=None)
 
 if GATEKEEPER_LOGIN_URL == '':
     GATEKEEPER_LOGIN_URL = None
@@ -151,11 +150,11 @@ JWT_USER_ID_FIELD = 'user_id'
 JWT_ALG = 'HS256'
 
 # for HMAC this is the same as the verifying key
-JWT_SIGNING_KEY = get_env_var('JWT_SIGNING_KEY')
-JWT_COOKIE_NAME = get_env_var('JWT_COOKIE_NAME')
-JWT_LOCAL_USER_ID_FIELD = os.environ.get('JWT_LOCAL_USER_ID_FIELD', 'username')
-AUTO_CREATE_AUTH_USER = os.environ.get('AUTO_CREATE_AUTH_USER', 'True').lower() == 'true'
-POST_AUTH_TOKEN_ATTRIBUTE = os.environ.get('POST_AUTH_TOKEN_ATTRIBUTE', 'access_token')
+JWT_SIGNING_KEY = config('JWT_SIGNING_KEY')
+JWT_COOKIE_NAME = config('JWT_COOKIE_NAME')
+JWT_LOCAL_USER_ID_FIELD = config('JWT_LOCAL_USER_ID_FIELD', default='username')
+AUTO_CREATE_AUTH_USER = config('AUTO_CREATE_AUTH_USER', default='True', cast=bool)
+POST_AUTH_TOKEN_ATTRIBUTE = config('POST_AUTH_TOKEN_ATTRIBUTE', default='access_token')
 
 #lets igore RSA-based signing for now...
 # with open(str(BASE_DIR / 'public.pem'), 'r') as f:
@@ -266,11 +265,11 @@ WSGI_APPLICATION = 'farm_calendar.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('POSTGRES_HOST'),
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
+        'NAME': config('POSTGRES_DB'),
+        'USER': config('POSTGRES_USER'),
+        'PASSWORD': config('POSTGRES_PASSWORD'),
+        'HOST': config('POSTGRES_HOST'),
+        'PORT': config('POSTGRES_PORT', default=5432, cast=int),
     }
 }
 
