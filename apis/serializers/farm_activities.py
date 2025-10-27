@@ -107,6 +107,14 @@ class FarmCalendarActivitySerializer(serializers.ModelSerializer):
         queryset=FarmParcel.objects.all(),
     )
 
+    isPartOfActivity = URNRelatedField(
+        class_names=['FarmCalendarActivity'],
+        queryset=FarmCalendarActivity.objects.all(),
+        source='parent_activity',
+        allow_null=True,
+        required=False
+    )
+
     class Meta:
         model = FarmCalendarActivity
         fields = [
@@ -114,7 +122,8 @@ class FarmCalendarActivitySerializer(serializers.ModelSerializer):
             'activityType', 'title', 'details',
             'hasStartDatetime', 'hasEndDatetime',
             'hasAgriParcel',
-            'responsibleAgent', 'usesAgriculturalMachinery'
+            'responsibleAgent', 'usesAgriculturalMachinery',
+            'isPartOfActivity'
         ]
 
     def to_representation(self, instance):
@@ -226,7 +235,8 @@ class FertilizationOperationSerializer(GenericOperationSerializer):
             'hasStartDatetime', 'hasEndDatetime',
             'responsibleAgent', 'usesAgriculturalMachinery',
             'hasAppliedAmount', 'hasApplicationMethod',
-            'usesFertilizer', 'operatedOn'
+            'usesFertilizer', 'operatedOn',
+            'isPartOfActivity',
         ]
 
     def to_representation(self, instance):
@@ -252,7 +262,8 @@ class IrrigationOperationSerializer(GenericOperationSerializer):
             'hasStartDatetime', 'hasEndDatetime',
             'responsibleAgent', 'usesAgriculturalMachinery',
             'hasAppliedAmount',
-            'usesIrrigationSystem', 'operatedOn'
+            'usesIrrigationSystem', 'operatedOn',
+            'isPartOfActivity',
         ]
 
 
@@ -286,7 +297,8 @@ class CropProtectionOperationSerializer(GenericOperationSerializer):
             'hasStartDatetime', 'hasEndDatetime',
             'responsibleAgent', 'usesAgriculturalMachinery',
             'hasAppliedAmount',
-            'usesPesticide', 'operatedOn'
+            'usesPesticide', 'operatedOn',
+            'isPartOfActivity',
         ]
 
 
@@ -331,6 +343,7 @@ class ObservationSerializer(FarmCalendarActivitySerializer):
             # 'responsibleAgent', 'usesAgriculturalMachinery',
             'hasResult',
             'observedProperty',
+            'isPartOfActivity',
         ]
 
 
@@ -349,10 +362,12 @@ class ObservationSerializer(FarmCalendarActivitySerializer):
         return super().create(validated_data)
 
 
+
 class AlertSerializer(FarmCalendarActivitySerializer):
     validFrom = serializers.DateTimeField(source='start_datetime')
     validTo = serializers.DateTimeField(source='end_datetime')
     dateIssued = serializers.DateTimeField(source='parent_activity.start_datetime', allow_null=True, read_only=True, required=False)
+    isPartOfActivity = None
     relatedObservation = URNRelatedField(
         class_names=['Observation'],
         queryset=Observation.objects.all(),
@@ -402,6 +417,7 @@ class CropStressIndicatorObservationSerializer(ObservationSerializer):
             'hasAgriCrop',
             'hasResult',
             'observedProperty',
+            'isPartOfActivity',
         ]
 
     def to_representation(self, instance):
@@ -431,6 +447,7 @@ class CropGrowthStageObservationSerializer(ObservationSerializer):
             'hasAgriCrop',
             'hasResult',
             'observedProperty',
+            'isPartOfActivity',
         ]
 
     def to_representation(self, instance):
@@ -456,6 +473,7 @@ class BaseParcelAreaObservationSerializer(ObservationSerializer):
             'hasArea',
             'hasResult',
             'observedProperty',
+            'isPartOfActivity',
         ]
 
 
@@ -548,7 +566,8 @@ class AddRawMaterialOperationSerializer(GenericOperationSerializer):
             'hasStartDatetime', 'hasEndDatetime',
             'operatedOn',
             'responsibleAgent', 'usesAgriculturalMachinery',
-            'hasCompostMaterial'
+            'hasCompostMaterial',
+            'isPartOfActivity',
         ]
 
     def to_representation(self, instance):
@@ -597,6 +616,7 @@ class CompostTurningOperationSerializer(GenericOperationSerializer):
             'hasStartDatetime', 'hasEndDatetime',
             'operatedOn',
             'responsibleAgent', 'usesAgriculturalMachinery',
+            'isPartOfActivity',
         ]
 
     def to_representation(self, instance):
@@ -656,7 +676,8 @@ class CompostOperationSerializer(FarmCalendarActivitySerializer):
             'responsibleAgent', 'usesAgriculturalMachinery',
             'hasAgriParcel',
             'isOperatedOn',
-            'hasNestedOperation', 'hasMeasurement'
+            'hasNestedOperation', 'hasMeasurement',
+            'isPartOfActivity',
         ]
 
     def to_representation(self, instance):
