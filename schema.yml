@@ -7661,7 +7661,14 @@ components:
           type: string
           pattern: ^#[0-9A-Fa-f]{6}$
           maxLength: 7
+        activity_endpoint:
+          type: string
+          readOnly: true
+          nullable: true
+          description: The farm activitie API endpoint with the specific details of
+            this activity type.
       required:
+      - activity_endpoint
       - id
       - name
     FarmCrop:
@@ -8614,6 +8621,12 @@ components:
           type: string
           pattern: ^#[0-9A-Fa-f]{6}$
           maxLength: 7
+        activity_endpoint:
+          type: string
+          readOnly: true
+          nullable: true
+          description: The farm activitie API endpoint with the specific details of
+            this activity type.
     PatchedFarmCrop:
       type: object
       properties:

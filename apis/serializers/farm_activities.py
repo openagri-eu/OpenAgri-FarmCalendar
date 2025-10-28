@@ -1,7 +1,9 @@
 import uuid
 
 from django.conf import settings
+from django.apps import apps
 from django.core.exceptions import ObjectDoesNotExist
+from django.urls import reverse
 from rest_framework import serializers
 
 from farm_management.models import (
@@ -128,6 +130,12 @@ class FarmCalendarActivitySerializer(serializers.ModelSerializer):
 
 
 class FarmCalendarActivityTypeSerializer(serializers.ModelSerializer):
+    activity_endpoint = serializers.SerializerMethodField(
+        allow_null=True, required=False,
+        read_only=True,
+        help_text="The farm activitie API endpoint with the specific details of this activity type."
+    )
+
     class Meta:
         model = FarmCalendarActivityType
 
@@ -135,7 +143,32 @@ class FarmCalendarActivityTypeSerializer(serializers.ModelSerializer):
             'id',
             'name', 'description', 'category',
             'background_color', 'border_color', 'text_color',
+            'activity_endpoint',
         ]
+
+    def _get_reverse_for_built_in_activity(self, obj):
+        for key, val in settings.DEFAULT_CALENDAR_ACTIVITY_TYPES.items():
+            if str(obj.pk) == str(val['id']):
+                built_in_class = val.get('built_in_class')
+                app_label, model_name = built_in_class.split('.')
+                built_in_model = apps.get_model(app_label=app_label, model_name=model_name)
+                model_name = built_in_model._meta.model_name
+                return reverse(f'{model_name}-list', args=[settings.SHORT_API_VERSION])
+        return None
+
+    def get_activity_endpoint(self, obj):
+        built_in_reverse = self._get_reverse_for_built_in_activity(obj)
+        if built_in_reverse:
+            return built_in_reverse
+
+        if obj.category == FarmCalendarActivityType.ActivityCategoryChoices.ACTIVITY:
+            return reverse('farmcalendaractivity-list', args=[settings.SHORT_API_VERSION])
+        elif obj.category == FarmCalendarActivityType.ActivityCategoryChoices.OBSERVATION:
+            return reverse('observation-list', args=[settings.SHORT_API_VERSION])
+        elif obj.category == FarmCalendarActivityType.ActivityCategoryChoices.ALERT:
+            return reverse('alert-list', args=[settings.SHORT_API_VERSION])
+
+        return reverse('farmcalendaractivity-list', args=[settings.SHORT_API_VERSION])
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
