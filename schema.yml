@@ -7016,6 +7016,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AddRawMaterialCompostQuantity'
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
       required:
       - activityType
       - hasCompostMaterial
@@ -7217,6 +7221,10 @@ components:
             type: string
             format: uuid
           readOnly: true
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
       required:
       - activityType
       - hasAgriParcel
@@ -7260,6 +7268,10 @@ components:
           items:
             type: string
             format: uuid
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
       required:
       - activityType
       - hasStartDatetime
@@ -7313,6 +7325,10 @@ components:
           $ref: '#/components/schemas/GenericQuantityValueField'
         observedProperty:
           type: string
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
       required:
       - activityType
       - hasAgriCrop
@@ -7361,6 +7377,10 @@ components:
         operatedOn:
           type: string
           format: uuid
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
       required:
       - activityType
       - hasAppliedAmount
@@ -7416,6 +7436,10 @@ components:
           $ref: '#/components/schemas/GenericQuantityValueField'
         observedProperty:
           type: string
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
       required:
       - activityType
       - hasAgriCrop
@@ -7462,6 +7486,10 @@ components:
           $ref: '#/components/schemas/GenericQuantityValueField'
         observedProperty:
           type: string
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
       required:
       - activityType
       - hasAgriParcel
@@ -7628,6 +7656,10 @@ components:
           items:
             type: string
             format: uuid
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
       required:
       - activityType
       - hasAgriParcel
@@ -7865,6 +7897,10 @@ components:
         operatedOn:
           type: string
           format: uuid
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
       required:
       - activityType
       - hasApplicationMethod
@@ -8021,6 +8057,10 @@ components:
         operatedOn:
           type: string
           format: uuid
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
       required:
       - activityType
       - hasAppliedAmount
@@ -8085,6 +8125,10 @@ components:
           $ref: '#/components/schemas/GenericQuantityValueField'
         observedProperty:
           type: string
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
       required:
       - activityType
       - hasAgriParcel
@@ -8144,6 +8188,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AddRawMaterialCompostQuantity'
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
     PatchedAgriculturalMachine:
       type: object
       properties:
@@ -8275,6 +8323,10 @@ components:
             type: string
             format: uuid
           readOnly: true
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
     PatchedCompostTurningOperation:
       type: object
       properties:
@@ -8309,6 +8361,10 @@ components:
           items:
             type: string
             format: uuid
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
     PatchedCropGrowthStageObservation:
       type: object
       properties:
@@ -8346,6 +8402,10 @@ components:
           $ref: '#/components/schemas/GenericQuantityValueField'
         observedProperty:
           type: string
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
     PatchedCropProtectionOperation:
       type: object
       properties:
@@ -8386,6 +8446,10 @@ components:
         operatedOn:
           type: string
           format: uuid
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
     PatchedCropStressIndicatorObservation:
       type: object
       properties:
@@ -8423,6 +8487,10 @@ components:
           $ref: '#/components/schemas/GenericQuantityValueField'
         observedProperty:
           type: string
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
     PatchedDiseaseDetectionObservation:
       type: object
       properties:
@@ -8461,6 +8529,10 @@ components:
           $ref: '#/components/schemas/GenericQuantityValueField'
         observedProperty:
           type: string
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
     PatchedFarm:
       type: object
       properties:
@@ -8594,6 +8666,10 @@ components:
           items:
             type: string
             format: uuid
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
     PatchedFarmCalendarActivityType:
       type: object
       properties:
@@ -8792,6 +8868,10 @@ components:
         operatedOn:
           type: string
           format: uuid
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
     PatchedFertilizer:
       type: object
       properties:
@@ -8904,6 +8984,10 @@ components:
         operatedOn:
           type: string
           format: uuid
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
     PatchedObservation:
       type: object
       properties:
@@ -8938,6 +9022,10 @@ components:
           $ref: '#/components/schemas/GenericQuantityValueField'
         observedProperty:
           type: string
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
     PatchedPesticide:
       type: object
       properties:
@@ -9017,6 +9105,10 @@ components:
           $ref: '#/components/schemas/GenericQuantityValueField'
         observedProperty:
           type: string
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
         usesPesticide:
           type: string
           format: uuid
@@ -9059,6 +9151,10 @@ components:
           $ref: '#/components/schemas/GenericQuantityValueField'
         observedProperty:
           type: string
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
     PatchedYieldPredictionObservation:
       type: object
       properties:
@@ -9097,6 +9193,10 @@ components:
           $ref: '#/components/schemas/GenericQuantityValueField'
         observedProperty:
           type: string
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
     Pesticide:
       type: object
       properties:
@@ -9211,6 +9311,10 @@ components:
           $ref: '#/components/schemas/GenericQuantityValueField'
         observedProperty:
           type: string
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
         usesPesticide:
           type: string
           format: uuid
@@ -9286,6 +9390,10 @@ components:
           $ref: '#/components/schemas/GenericQuantityValueField'
         observedProperty:
           type: string
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
       required:
       - activityType
       - hasAgriParcel
@@ -9332,6 +9440,10 @@ components:
           $ref: '#/components/schemas/GenericQuantityValueField'
         observedProperty:
           type: string
+        isPartOfActivity:
+          type: string
+          format: uuid
+          nullable: true
       required:
       - activityType
       - hasAgriParcel
