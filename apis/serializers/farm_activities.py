@@ -105,6 +105,7 @@ class FarmCalendarActivitySerializer(serializers.ModelSerializer):
         source='parcel',
         class_names=['Parcel'],
         queryset=FarmParcel.objects.all(),
+        allow_null=True, required=False
     )
 
     isPartOfActivity = URNRelatedField(

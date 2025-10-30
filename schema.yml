@@ -7126,6 +7126,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         validFrom:
           type: string
           format: date-time
@@ -7146,7 +7147,6 @@ components:
       required:
       - activityType
       - dateIssued
-      - hasAgriParcel
       - id
       - relatedObservation
       - validFrom
@@ -7207,6 +7207,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         isOperatedOn:
           type: string
         hasNestedOperation:
@@ -7227,7 +7228,6 @@ components:
           nullable: true
       required:
       - activityType
-      - hasAgriParcel
       - hasMeasurement
       - hasNestedOperation
       - hasStartDatetime
@@ -7318,6 +7318,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         hasAgriCrop:
           type: string
           format: uuid
@@ -7332,7 +7333,6 @@ components:
       required:
       - activityType
       - hasAgriCrop
-      - hasAgriParcel
       - hasResult
       - id
       - observedProperty
@@ -7429,6 +7429,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         hasAgriCrop:
           type: string
           format: uuid
@@ -7443,7 +7444,6 @@ components:
       required:
       - activityType
       - hasAgriCrop
-      - hasAgriParcel
       - hasResult
       - id
       - observedProperty
@@ -7478,6 +7478,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         hasArea:
           type: string
           format: decimal
@@ -7492,7 +7493,6 @@ components:
           nullable: true
       required:
       - activityType
-      - hasAgriParcel
       - hasArea
       - hasResult
       - id
@@ -7648,6 +7648,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         responsibleAgent:
           type: string
           nullable: true
@@ -7662,7 +7663,6 @@ components:
           nullable: true
       required:
       - activityType
-      - hasAgriParcel
       - hasStartDatetime
       - id
       - usesAgriculturalMachinery
@@ -8117,6 +8117,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         madeBySensor:
           allOf:
           - $ref: '#/components/schemas/MadeBySensorField'
@@ -8131,7 +8132,6 @@ components:
           nullable: true
       required:
       - activityType
-      - hasAgriParcel
       - hasResult
       - id
       - observedProperty
@@ -8258,6 +8258,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         validFrom:
           type: string
           format: date-time
@@ -8309,6 +8310,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         isOperatedOn:
           type: string
         hasNestedOperation:
@@ -8395,6 +8397,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         hasAgriCrop:
           type: string
           format: uuid
@@ -8480,6 +8483,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         hasAgriCrop:
           type: string
           format: uuid
@@ -8521,6 +8525,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         hasArea:
           type: string
           format: decimal
@@ -8658,6 +8663,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         responsibleAgent:
           type: string
           nullable: true
@@ -9014,6 +9020,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         madeBySensor:
           allOf:
           - $ref: '#/components/schemas/MadeBySensorField'
@@ -9097,6 +9104,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         hasArea:
           type: string
           format: decimal
@@ -9143,6 +9151,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         hasArea:
           type: string
           format: decimal
@@ -9185,6 +9194,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         hasArea:
           type: string
           format: decimal
@@ -9303,6 +9313,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         hasArea:
           type: string
           format: decimal
@@ -9321,7 +9332,6 @@ components:
           nullable: true
       required:
       - activityType
-      - hasAgriParcel
       - hasArea
       - hasResult
       - id
@@ -9382,6 +9392,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         hasArea:
           type: string
           format: decimal
@@ -9396,7 +9407,6 @@ components:
           nullable: true
       required:
       - activityType
-      - hasAgriParcel
       - hasArea
       - hasResult
       - id
@@ -9432,6 +9442,7 @@ components:
         hasAgriParcel:
           type: string
           format: uuid
+          nullable: true
         hasArea:
           type: string
           format: decimal
@@ -9446,7 +9457,6 @@ components:
           nullable: true
       required:
       - activityType
-      - hasAgriParcel
       - hasArea
       - hasResult
       - id
