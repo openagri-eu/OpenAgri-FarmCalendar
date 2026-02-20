@@ -28,6 +28,7 @@ from ..models import (
     DiseaseDetectionObservation,
     VigorEstimationObservation,
     SprayingRecommendationObservation,
+    AnimalActivity,
 )
 from farm_management.models import CompostMaterial
 
@@ -152,3 +153,8 @@ class AddRawMaterialOperationForm(NestedActivityForm):
             )
 
         return instance
+
+
+class AnimalActivityForm(ParentActivityForm):
+    class Meta(ParentActivityForm.Meta):
+        model = AnimalActivity

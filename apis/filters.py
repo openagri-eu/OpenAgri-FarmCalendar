@@ -24,6 +24,7 @@ from farm_activities.models import (
     CompostOperation,
     AddRawMaterialOperation,
     CompostTurningOperation,
+    AnimalActivity,
 )
 
 
@@ -151,3 +152,8 @@ class CompostTurningOperationFilter(BaseCalendarActivityFilter):
     class Meta(BaseCalendarActivityFilter.Meta):
         model = CompostTurningOperation
         fields = ['title', 'activity_type', 'parcel']
+
+class AnimalActivityFilter(BaseCalendarActivityFilter):
+    class Meta(BaseCalendarActivityFilter.Meta):
+        model = AnimalActivity
+        fields = ['title', 'activity_type', 'parcel', 'animal']

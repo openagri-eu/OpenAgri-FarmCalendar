@@ -12,6 +12,7 @@ from farm_management.models import (
     CompostMaterial,
     FarmParcel,
     FarmCrop,
+    FarmAnimal,
     AgriculturalMachine
 )
 
@@ -32,6 +33,7 @@ from farm_activities.models import (
     AddRawMaterialOperation,
     AddRawMaterialCompostQuantity,
     CompostTurningOperation,
+    AnimalActivity,
 )
 
 from .base import URNRelatedField, URNCharField
@@ -712,3 +714,31 @@ class CompostOperationSerializer(FarmCalendarActivitySerializer):
         json_ld_representation['hasNestedOperation'] = clean_nested_activities
         json_ld_representation['hasMeasurement'] = clean_nested_obs
         return json_ld_representation
+
+
+class AnimalActivitySerializer(FarmCalendarActivitySerializer):
+
+    hasAnimal = URNRelatedField(
+        class_names=['FarmAnimal'],
+        queryset=FarmAnimal.objects.all(),
+        source='animal',
+        allow_null=True
+    )
+
+    class Meta:
+        model = AnimalActivity
+        fields = [
+            'id',
+            'activityType', 'title', 'details',
+            'hasStartDatetime', 'hasEndDatetime',
+            'hasAgriParcel',
+            'hasAnimal',
+            'responsibleAgent', 'usesAgriculturalMachinery',
+            'isPartOfActivity','hasMeasurement',
+        ]
+
+
+    hasMeasurement = URNRelatedField(
+        class_names=['Observation'], source='nested_activities', many=True,
+        read_only=True
+    )

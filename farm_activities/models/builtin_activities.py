@@ -161,3 +161,13 @@ class AddRawMaterialCompostQuantity(models.Model):
 
     applied_amount = models.DecimalField(max_digits=10, decimal_places=2)
     applied_amount_unit = models.CharField(max_length=255)
+
+
+class AnimalActivity(FarmCalendarActivity):
+    ACTIVITY_NAME = settings.DEFAULT_CALENDAR_ACTIVITY_TYPES['animal_activity']['name']
+
+    class Meta:
+        verbose_name = "Animal Activity"
+        verbose_name_plural = "Animal Activities"
+
+    animal = models.ForeignKey('farm_management.FarmAnimal', on_delete=models.SET_NULL, blank=True, null=True)
