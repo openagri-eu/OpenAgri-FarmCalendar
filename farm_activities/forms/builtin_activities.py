@@ -29,6 +29,7 @@ from ..models import (
     VigorEstimationObservation,
     SprayingRecommendationObservation,
     AnimalActivity,
+    AnimalLactatingActivity,
 )
 from farm_management.models import CompostMaterial
 
@@ -158,3 +159,7 @@ class AddRawMaterialOperationForm(NestedActivityForm):
 class AnimalActivityForm(ParentActivityForm):
     class Meta(ParentActivityForm.Meta):
         model = AnimalActivity
+
+class AnimalLactatingActivityForm(ParentActivityForm):
+    class Meta(ParentActivityForm.Meta):
+        model = AnimalLactatingActivity

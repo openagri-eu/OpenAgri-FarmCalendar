@@ -34,6 +34,7 @@ from farm_activities.models import (
     AddRawMaterialCompostQuantity,
     CompostTurningOperation,
     AnimalActivity,
+    AnimalLactatingActivity,
 )
 
 from .base import URNRelatedField, URNCharField
@@ -742,3 +743,66 @@ class AnimalActivitySerializer(FarmCalendarActivitySerializer):
         class_names=['Observation'], source='nested_activities', many=True,
         read_only=True
     )
+
+
+def lactating_amount_fields_ref_quantity_value_serializer_factory(base_field_name):
+    value_field = base_field_name + '_amount'
+    unit_field = base_field_name + '_unit'
+    class LactatingAmountFieldSerializer(serializers.Serializer):
+        unit = serializers.CharField(allow_null=True, read_only=True, required=False)
+        hasValue = serializers.CharField(allow_null=True, read_only=True, required=False)
+
+
+        def to_representation(self, instance):
+            value = getattr(instance, value_field)
+            unit = getattr(instance, unit_field)
+            uuid_orig_str = "".join([
+                str(getattr(instance, unit_field, '')),
+                str(getattr(instance, value_field, ''),)
+            ])
+            hash_uuid = str(uuid.uuid5(uuid.NAMESPACE_DNS, uuid_orig_str))
+            return {
+                '@id': generate_urn('QuantityValue',obj_id=hash_uuid),
+                '@type': 'QuantityValue',
+                'unit': unit,
+                'hasValue': value,
+            }
+    return LactatingAmountFieldSerializer
+
+
+
+class AnimalLactatingActivitySerializer(AnimalActivitySerializer):
+
+    hasDaysInMilk = serializers.CharField(source='days_in_milk')
+    hasLactationNumber = serializers.CharField(source='lactation_number')
+    hasControl = serializers.CharField(source='control')
+
+    hasTotalMilkYield = quantity_value_serializer_factory('total_milk_yield_unit', 'total_milk_yield_amount')(source='*', required=True)
+    hasMilkYield = quantity_value_serializer_factory('milk_yield_unit', 'milk_yield_amount')(source='*', required=True)
+    hasRCS = quantity_value_serializer_factory('rcs_unit', 'rcs_amount')(source='*', required=True)
+    hasUrea = quantity_value_serializer_factory('urea_unit', 'urea_amount')(source='*', required=True)
+    hasFat = quantity_value_serializer_factory('fat_unit', 'fat_amount')(source='*', required=True)
+    hasProtein = quantity_value_serializer_factory('protein_unit', 'protein_amount')(source='*', required=True)
+    hasDryMatter = quantity_value_serializer_factory('dry_matter_unit', 'dry_matter_amount')(source='*', required=True)
+
+    class Meta:
+        model = AnimalLactatingActivity
+        fields = [
+            'id',
+            'activityType', 'title', 'details',
+            'hasStartDatetime', 'hasEndDatetime',
+            'hasAgriParcel',
+            'hasAnimal',
+            'responsibleAgent', 'usesAgriculturalMachinery',
+            'isPartOfActivity','hasMeasurement',
+            'hasDaysInMilk',
+            'hasLactationNumber',
+            'hasControl',
+            'hasTotalMilkYield',
+            'hasMilkYield',
+            'hasRCS',
+            'hasUrea',
+            'hasFat',
+            'hasProtein',
+            'hasDryMatter'
+        ]

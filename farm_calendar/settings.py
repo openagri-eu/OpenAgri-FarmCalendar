@@ -467,4 +467,14 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'id': '00000000-0000-0000-0000-000000000013',
         'built_in_class': 'farm_activities.AnimalActivity',
     },
+    'animal_lactating_activity': {
+        'name': 'Animal Lactating Activity',
+        'description': 'Animal Lactating Activity',
+        'background_color': "#F9ECC6",
+        'border_color': "#335872",
+        'text_color': "#101B37",
+        'category': 'activity',
+        'id': '00000000-0000-0000-0000-000000000014',
+        'built_in_class': 'farm_activities.AnimalLactatingActivity',
+    }
 }

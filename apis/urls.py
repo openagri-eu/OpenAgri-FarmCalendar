@@ -32,6 +32,7 @@ from .views import (
     AddRawMaterialOperationViewSet,
     CompostTurningOperationViewSet,
     AnimalActivityViewSet,
+    AnimalLactatingActivityViewSet,
 )
 
 router = routers.DefaultRouter()
@@ -61,6 +62,8 @@ router.register(r'AddRawMaterialOperations', AddRawMaterialOperationViewSet)
 router.register(r'CompostOperations', CompostOperationViewSet)
 router.register(r'CompostTurningOperations', CompostTurningOperationViewSet)
 router.register(r'AnimalActivities', AnimalActivityViewSet)
+router.register(r'AnimalLactatingActivities', AnimalLactatingActivityViewSet)
+
 
 
 compost_operations_router = routers.NestedSimpleRouter(router, r'CompostOperations', lookup='compost_operation')
