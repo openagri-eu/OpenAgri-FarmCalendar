@@ -745,31 +745,6 @@ class AnimalActivitySerializer(FarmCalendarActivitySerializer):
     )
 
 
-def lactating_amount_fields_ref_quantity_value_serializer_factory(base_field_name):
-    value_field = base_field_name + '_amount'
-    unit_field = base_field_name + '_unit'
-    class LactatingAmountFieldSerializer(serializers.Serializer):
-        unit = serializers.CharField(allow_null=True, read_only=True, required=False)
-        hasValue = serializers.CharField(allow_null=True, read_only=True, required=False)
-
-
-        def to_representation(self, instance):
-            value = getattr(instance, value_field)
-            unit = getattr(instance, unit_field)
-            uuid_orig_str = "".join([
-                str(getattr(instance, unit_field, '')),
-                str(getattr(instance, value_field, ''),)
-            ])
-            hash_uuid = str(uuid.uuid5(uuid.NAMESPACE_DNS, uuid_orig_str))
-            return {
-                '@id': generate_urn('QuantityValue',obj_id=hash_uuid),
-                '@type': 'QuantityValue',
-                'unit': unit,
-                'hasValue': value,
-            }
-    return LactatingAmountFieldSerializer
-
-
 
 class AnimalLactatingActivitySerializer(AnimalActivitySerializer):
 
