@@ -457,4 +457,24 @@ DEFAULT_CALENDAR_ACTIVITY_TYPES = {
         'id': '00000000-0000-0000-0000-000000000012',
         'built_in_class': 'farm_activities.SprayingRecommendationObservation',
     },
+    'animal_activity': {
+        'name': 'Animal Activity',
+        'description': 'Animal Activity',
+        'background_color': "#C8AF6A",
+        'border_color': "#725A33",
+        'text_color': '#3B2A1E',
+        'category': 'activity',
+        'id': '00000000-0000-0000-0000-000000000013',
+        'built_in_class': 'farm_activities.AnimalActivity',
+    },
+    'animal_lactating_activity': {
+        'name': 'Animal Lactating Activity',
+        'description': 'Animal Lactating Activity',
+        'background_color': "#F9ECC6",
+        'border_color': "#335872",
+        'text_color': "#101B37",
+        'category': 'activity',
+        'id': '00000000-0000-0000-0000-000000000014',
+        'built_in_class': 'farm_activities.AnimalLactatingActivity',
+    }
 }
