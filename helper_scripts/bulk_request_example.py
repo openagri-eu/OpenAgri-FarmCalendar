@@ -9,7 +9,7 @@ from typing import List, Dict, Any
 GATEKEEPER_BASE_URL = 'http://localhost:8001'
 LOGIN_URL = url = f"{GATEKEEPER_BASE_URL}/api/login/"
 SERVICE_BASE_URL = f'{GATEKEEPER_BASE_URL}/api/proxy/farmcalendar'
-API_ENDPOINT = '/api/v1/bulk/animal-lactating-activities'
+API_ENDPOINT = '/api/v1/bulk/animal-lactating-activities/'
 API_URL = f'{SERVICE_BASE_URL}{API_ENDPOINT}'
 
 
