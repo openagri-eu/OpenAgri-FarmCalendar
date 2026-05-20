@@ -7304,6 +7304,62 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/v1/bulk/animal-lactating-activities:
+    post:
+      operationId: api_v1_bulk_animal_lactating_activities_create
+      description: "\n        Create multiple animals and their lactating activities\
+        \ in a single request.\n\n        Each item in the list should contain:\n\
+        \        - `animal`: Animal data (same as FarmAnimals endpoint)\n        -\
+        \ `activities`: List of lactating activities (same as AnimalLactatingActivities\
+        \ endpoint)\n\n        The entire operation is atomic - if any animal or activity\
+        \ fails validation,\n        nothing will be saved.\n        "
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - jsonld
+      tags:
+      - bulk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/BulkAnimalActivityItem'
+          application/x-www-form-urlencoded:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/BulkAnimalActivityItem'
+          multipart/form-data:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/BulkAnimalActivityItem'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/ld+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BulkAnimalActivityItem'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BulkAnimalActivityItem'
+          description: Successfully created animals and activities
+        '400':
+          description: Bad request - validation error
   /api/v1/schema/:
     get:
       operationId: api_v1_schema_retrieve
@@ -7793,6 +7849,18 @@ components:
       required:
       - numericValue
       - unit
+    BulkAnimalActivityItem:
+      type: object
+      properties:
+        animal:
+          $ref: '#/components/schemas/FarmAnimal'
+        activities:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnimalLactatingActivity'
+      required:
+      - activities
+      - animal
     CategoryEnum:
       enum:
       - activity
