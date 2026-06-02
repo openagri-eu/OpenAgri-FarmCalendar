@@ -101,14 +101,16 @@ if GATEKEEPER_LOGIN_URL is not None:
 
 none_if_empty_cast = lambda x: None if x == '' else x
 AGSTACK_ASSET_REGISTY_API_URL = config('AGSTACK_ASSET_REGISTY_API_URL', default=None, cast=none_if_empty_cast)
+AGSTACK_USER_REGISTY_API_URL = config('AGSTACK_USER_REGISTY_API_URL', default=None, cast=none_if_empty_cast)
 
-AGSTACK_CLIENT_SECRET = None
-AGSTACK_API_KEY = None
-if AGSTACK_ASSET_REGISTY_API_URL is not None:
-    AGSTACK_CLIENT_SECRET = config('AGSTACK_CLIENT_SECRET')
-    AGSTACK_API_KEY = config('AGSTACK_API_KEY')
+AGSTACK_ACCESS_TOKEN = None
+AGSTACK_REFRESH_TOKEN = None
+if AGSTACK_ASSET_REGISTY_API_URL is not None and AGSTACK_USER_REGISTY_API_URL is not None:
+    AGSTACK_ACCESS_TOKEN = config('AGSTACK_ACCESS_TOKEN')
+    AGSTACK_REFRESH_TOKEN = config('AGSTACK_REFRESH_TOKEN')
     AGSTACK_ENDPOINTS = {
         'register_field_boundary': config('AGSTACK_ENDPOINT_REGISTER_FIELD_BOUNDARY', default='/register-field-boundary'),
+        'refresh_token': config('AGSTACK_ENDPOINT_REFRESH_TOKEN', default='/refresh'),
     }
 
 
