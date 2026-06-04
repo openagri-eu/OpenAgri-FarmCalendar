@@ -42,7 +42,7 @@ class LocationBaseModel(models.Model):
     longitude = models.DecimalField(_('Longitude'), max_digits=17, decimal_places=14, blank=True, null=True)
 
     geometry = models.TextField(_('Geometry (WKT EPSG:4326)'), blank=True, null=True)
-    geo_id = models.CharField(_('Geographic Data ID'), unique=True, blank=True, null=True)
+    geo_id = models.CharField(_('Geographic Data ID'), unique=False, blank=True, null=True)
 
     class Meta:
         abstract = True
