@@ -70,7 +70,7 @@ class CropSpeciesSerializerField(serializers.Serializer):
             '@id': generate_urn('CropType', obj_id=hash_uuid),
             '@type': 'CropType',
             'name': getattr(instance, 'species', ''),
-            'variety': getattr(instance, 'species', ''),
+            'variety': variety,
         }
 
 
