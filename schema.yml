@@ -7304,7 +7304,7 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/bulk/animal-lactating-activities:
+  /api/v1/bulk/animal-lactating-activities/:
     post:
       operationId: api_v1_bulk_animal_lactating_activities_create
       description: "\n        Create multiple animals and their lactating activities\
@@ -8519,7 +8519,9 @@ components:
           nullable: true
           maxLength: 500
         hasGeometry:
-          $ref: '#/components/schemas/GeometrySerializerField'
+          allOf:
+          - $ref: '#/components/schemas/GeometrySerializerField'
+          nullable: true
         location:
           $ref: '#/components/schemas/LocationSerializerField'
         hasAgriCrop:
@@ -8715,6 +8717,7 @@ components:
       properties:
         asWKT:
           type: string
+          nullable: true
       required:
       - asWKT
     IrrigationOperation:
@@ -9635,7 +9638,9 @@ components:
           nullable: true
           maxLength: 500
         hasGeometry:
-          $ref: '#/components/schemas/GeometrySerializerField'
+          allOf:
+          - $ref: '#/components/schemas/GeometrySerializerField'
+          nullable: true
         location:
           $ref: '#/components/schemas/LocationSerializerField'
         hasAgriCrop:
