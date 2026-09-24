@@ -84,6 +84,7 @@ class FarmCropSerializer(BaseFarmAssetSerializer):
             'id', 'name', 'description',
             'hasAgriParcel', 'cropSpecies',
             'growth_stage',
+            'kc_init', 'kc_mid', 'kc_end'
         ]
 
     def to_representation(self, instance):

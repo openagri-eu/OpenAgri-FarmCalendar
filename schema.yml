@@ -8440,6 +8440,24 @@ components:
           type: string
           nullable: true
           maxLength: 255
+        kc_init:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+          title: Init-season coefficient (Irrigation)
+        kc_mid:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+          title: Mid-season coefficient (Irrigation)
+        kc_end:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+          title: End-season coefficient (Irrigation)
       required:
       - cropSpecies
       - dateCreated
@@ -9567,6 +9585,24 @@ components:
           type: string
           nullable: true
           maxLength: 255
+        kc_init:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+          title: Init-season coefficient (Irrigation)
+        kc_mid:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+          title: Mid-season coefficient (Irrigation)
+        kc_end:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          nullable: true
+          title: End-season coefficient (Irrigation)
     PatchedFarmParcel:
       type: object
       properties:
