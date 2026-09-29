@@ -11,22 +11,28 @@ class AgstackClient:
 
     def __init__(self):
         self.asset_api_url = settings.AGSTACK_ASSET_REGISTY_API_URL
-        self.user_api_url = settings.AGSTACK_USER_REGISTY_API_URL
-        self.access_token = settings.AGSTACK_ACCESS_TOKEN
-        self.refresh_token = settings.AGSTACK_REFRESH_TOKEN
-        self.refresh_token_url = urljoin(self.user_api_url, settings.AGSTACK_ENDPOINTS['refresh_token'])
+        self.user = settings.AGSTACK_USER
+        self.password = settings.AGSTACK_PASS
+        self.access_token = None
+        self.login_url = urljoin(self.asset_api_url, settings.AGSTACK_ENDPOINTS['login'])
         self.register_field_url = urljoin(self.asset_api_url, settings.AGSTACK_ENDPOINTS['register_field_boundary'])
 
-    def _refresh_access_token(self):
-        """Refresh the access token using the refresh token as a cookie"""
-
-        response = requests.get(
-            self.refresh_token_url,
-            cookies={"refresh_token_cookie": self.refresh_token}
+    def _login(self):
+        """Login with user/password and store the access token."""
+        response = requests.post(
+            self.login_url,
+            data={"username": self.user, "password": self.password},
         )
         self.access_token = response.json()["access_token"]
 
+    def _ensure_access_token(self):
+        """Make sure we have an access token before making API calls."""
+        if not self.access_token:
+            self._login()
+
     def register_field_boundary(self, wkt_geometry, threshold=95, s2_index=(8, 13)):
+        self._ensure_access_token()
+
         headers = {
             "Authorization": f"Bearer {self.access_token}",
             "X-FROM-ASSET-REGISTRY": "True",
@@ -36,12 +42,12 @@ class AgstackClient:
         data = {
             "wkt": wkt_geometry,
         }
-
         endpoint_url = self.register_field_url
         resp = requests.post(endpoint_url, json=data, headers=headers)
-        # If token expired, refresh and retry once
+
+        # If token expired/invalid, login again and retry once
         if resp.status_code == 401 or 'invalid token' in resp.json().get('message', '').lower():
-            self._refresh_access_token()
+            self._login()
             headers["Authorization"] = f"Bearer {self.access_token}"
             resp = requests.post(endpoint_url, json=data, headers=headers)
 
