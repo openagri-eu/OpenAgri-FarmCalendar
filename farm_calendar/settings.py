@@ -104,9 +104,13 @@ AGSTACK_ASSET_REGISTY_API_URL = config('AGSTACK_ASSET_REGISTY_API_URL', default=
 
 AGSTACK_USER = None
 AGSTACK_PASS = None
+
+AGSTACK_AUTO_FALLBACK = config('AGSTACK_AUTO_FALLBACK', default=True, cast=bool)
+AGSTACK_GEOID_PREFIX = config('AGSTACK_GEOID_PREFIX', default='agstack:')
 if AGSTACK_ASSET_REGISTY_API_URL is not None:
     AGSTACK_USER = config('AGSTACK_USER')
     AGSTACK_PASS = config('AGSTACK_PASS')
+
     AGSTACK_ENDPOINTS = {
         'register_field_boundary': config('AGSTACK_ENDPOINT_REGISTER_FIELD_BOUNDARY', default='/register-field-boundary'),
         'login': config('AGSTACK_ENDPOINT_LOGIN', default='/users/login'),
